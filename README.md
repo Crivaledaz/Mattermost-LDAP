@@ -33,14 +33,17 @@ Obviously, you must have a Mattermost Server installed and be administrator on i
 ### Pre-install
 * For Centos 7, RHEL 7 and Fedora :
 Install required packages :
-```#For PostgreSQL
+```
+#For PostgreSQL
 sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-psql git 
 
 #For MySQL
-sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git```
+sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+```
 
 Start and enable service for Apache and Database :
-```#For PostgreSQL
+```
+#For PostgreSQL
 sudo systemctl start httpd
 sudo systemctl start postgresql
 sudo systemctl enable httpd
@@ -51,14 +54,17 @@ sudo systemctl enable postgresql
 sudo systemctl start httpd
 sudo systemctl start mariadb
 sudo systemctl enable httpd
-sudo systemctl enable mariadb```
+sudo systemctl enable mariadb
+```
 
 Your system is ready to install and run Mattermost-LDAP module.
 
 
 ## Install
 Clone (or download and extract) this repository in your /var/www/html (or your httpd root directory) :
-```git clone https://github.com/crivaledaz/Mattermost-LDAP.git```
+```
+git clone https://github.com/crivaledaz/Mattermost-LDAP.git
+```
 
 You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh" or "init_mysql.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the .sh file and modifying configuration variables at the beginning of the file.
 
@@ -67,7 +73,8 @@ This script will automatically create and add a new client in the oauth server, 
 ### configuration
 * Mattermost :
 Active Gitlab authentication in system console > Gitlab (or config.json on server) and fill application id and secret with the two token got during install section. For the next fields use this :
-```User API Endpoint : http://HOSTNAME/oauth/resource.php
+```
+User API Endpoint : http://HOSTNAME/oauth/resource.php
 Auth Endpoint: http://HOSTNAME/oauth/authorize.php
 Token Endpoint: http://HOSTNAME/oauth/token.php
 ```
@@ -75,7 +82,8 @@ Change HOSTNAME by hostname or ip of the server where you have installed Matterm
 
 * Database credential
 Edit oauth/server.php and adapt, with your settings, variables for database connection :
-```$dsn      = 'pgsql:dbname=oauth_db;host=localhost;port=5432';
+```
+$dsn      = 'pgsql:dbname=oauth_db;host=localhost;port=5432';
 $username = 'oauth';
 $password = 'oauth_secure-pass';
 ```
@@ -104,11 +112,11 @@ MySQL has not really been tested so it is possible there is some bugs with.
 
 
 ## To do list
- -> Gathering LDAP config
- -> Add CSS to make a beautiful interface for Oauth server
- -> Create an associated Puppet module
- -> Change Gitlab button
- -> Security audit
+ * Gathering LDAP config
+ * Add CSS to make a beautiful interface for Oauth server
+ * Create an associated Puppet module
+ * Change Gitlab button
+ * Security audit
 
 ## Thanks
 
@@ -127,7 +135,8 @@ I wish to thank my company and my colleagues for their help and support. Also, I
 
  * .htaccess does not work
  Add following lines to your php.ini and restart httpd service.
- ```<Directory "/var/www/html/oauth">
+ ```
+ <Directory "/var/www/html/oauth">
     AllowOverride All
 </Directory>
  ```
