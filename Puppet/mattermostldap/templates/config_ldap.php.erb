@@ -1,0 +1,22 @@
+<?php
+// LDAP server
+$hostname = "<%= @ldap_uri %>";
+$port = <%= @ldap_port %>;
+
+// variable use in connexion.php 
+$rdn_suffix = "<%= @ldap_rdn %>";
+
+// variable use in resource.php 
+$base = "<%= @ldap_base %>";
+$filter = "<%= @ldap_filter %>";
+
+//add virgule to concat in php script
+if ($filter != "")
+{
+	$filter = "," . $filter;
+}
+
+if ($rdn_suffix != "")
+{
+	$rdn_suffix = "," . $rdn_suffix;
+}
