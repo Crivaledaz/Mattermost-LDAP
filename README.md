@@ -25,23 +25,33 @@ This module requires the following :
 * php-pgsql or php-mysql
 * httpd
 * postgresql or mariadb (mysql)
-* postgresql-server or maridb-server
+* postgresql-server or mariadb-server
 * git
 
 Obviously, you must have a Mattermost Server installed and be administrator on it, and a LDAP server configured.
 
 ### Pre-install
-* For Centos 7, RHEL 7 and Fedora :
+
 Install required packages :
+
+* For Centos 7, RHEL 7 and Fedora :
 ```
 #For PostgreSQL
-sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-psql git 
+sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git 
 
 #For MySQL
 sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
 ```
+* For Debian, ubuntu, Mint :
+```
+#For PostgreSQL
+sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git 
 
-Start and enable service for Apache and Database :
+#For MySQL
+sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+```
+
+Start and enable service for Apache and Database (for all distribution using systemd):
 ```
 #For PostgreSQL
 sudo systemctl start httpd
@@ -63,14 +73,47 @@ Your system is ready to install and run Mattermost-LDAP module.
 ## Install
 Clone (or download and extract) this repository in your /var/www/html (or your httpd root directory) :
 ```
+cd ~
 git clone https://github.com/crivaledaz/Mattermost-LDAP.git
+cd Mattermost-LDAP
+cp -r oauth/ /var/www/html/
 ```
 
-You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh" or "init_mysql.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the .sh file and modifying configuration variables at the beginning of the file.
+You need to create a database for the oauth server. For this purpose, you can use the script "init_postgres.sh" or "init_mysql.sh". These scripts try to configure your database automatically, by creating a new user and a new database associated for the oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the config_init.sh file and modifying configuration variables. For postgresql, you can copy and paste following lines :
+```
+nano config_init.sh
+./init_postgres.sh
+```
 
 This script will automatically create and add a new client in the oauth server, returning a client id and a client secret. You need to keep these two token to configure Mattermost. Please be sure the client secret remained secret. The redirect url in the script must comply with the hostname of your Mattermost server, else Mattermost could not get data from the Oauth server.
 
-### configuration
+
+## Configuration
+
+* Init script configuration :
+#### oauth_user
+Oauth user in the database. This user must have right on the oauth database to store oauth tokens. By default : oauth	
+#### oauth_pass
+Oauth user password in the database. By default, oauth_secure-pass
+#### ip
+Hostname or IP address of the database. By default : 127.0.0.1 		
+#### port
+The port to connect to the database. By default : 5432 (postgres) 		
+#### oauth_db_name
+Database name for oauth server. By default : oauth_db	
+#### client_id	
+The application ID shared with mattermost. This ID should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script. 
+#### client_secret
+The application secret shared with mattermost. This secret should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script. Secret must be different of the client ID.
+#### redirect_uri
+The callback address where oauth will send tokens to Mattermost. Normally it should be http://mattermost.company.com/signup/gitlab/complete
+#### grant_types
+The type of authentification use by Mattermost. It should be "authorization_code".
+#### scope
+The scope of authentification use by Mattermost. It should be "api".
+#### user_id
+The username of the user who create the Mattermost client in Oauth. This field has no impact, and could be used as a commentary field. By default this field is empty.
+
 * Mattermost :
 Active Gitlab authentication in system console > Gitlab (or config.json on server) and fill application id and secret with the two token got during install section. For the next fields use this :
 ```
@@ -80,20 +123,41 @@ Token Endpoint: http://HOSTNAME/oauth/token.php
 ```
 Change HOSTNAME by hostname or ip of the server where you have installed Mattermost-LDAP module. 
 
-* Database credential
-Edit oauth/server.php and adapt, with your settings, variables for database connection :
-```
-$dsn      = 'pgsql:dbname=oauth_db;host=localhost;port=5432';
-$username = 'oauth';
-$password = 'oauth_secure-pass';
-```
+* Database credentials
+Edit oauth/config_db.php and adapt, with your settings, to set up database in PHP.
+
+#### $host
+Hostname or IP address of the database. (ex : localhost)
+#### $port
+The port of your database to connect. (ex : 5432 for postgres)
+#### $name
+Database name for oauth server. If you use init script make sure to use the same database name. (ex : oauth_db) 
+#### $type
+Database type to adapt PDO to your database server. Should be mysql or pgsql.
+#### $username
+Oauth user in the database. This user must have right on the oauth database to store oauth tokens. If you use init script make sure to use the same database user. (ex : oauth)
+#### $password
+Oauth user password in the database. If you use init script make sure to use the same database user. (ex : oauth_secure-pass)
 
 * LDAP config
-Edit oauth/LDAP/ldap_config.php to provide your ldap address and port.
-Edit oauth/resource.php to change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration.
-Edit oauth/connexion.php to change the relative directory name ($rdn) to comply with your LDAP configuration.
+Edit oauth/LDAP/config_ldap.php : 
+1. Provide your ldap address and port.
+2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration, these variables will be use in resource.php.
+3. Change the relative directory name suffix ($rdn) to comply with your LDAP configuration, this variable will be use in connexion.php. 
 
-To try your configuration you can use the LDAP library for PHP or ldapsearch command in a shell.
+#### $hostname
+Your LDAP hostname or LDAP IP, to connect to the LDAP server.
+#### $port
+Your LDAP port, to connect to the LDAP server. By default : 389.
+#### $rdn
+The LDAP Relative Directory Name suffix to identify a user in LDAP, see LDAP.php class for more information (use to check user credentials on LDAP). Note that user id (uid) will be add to this suffix to produce a complete relative directory name. The uid is provided by username field in the form from oauth/index.php. For more information, refer to ldap_bind() in php documentation.
+#### $base
+The base directory name of your LDAP server. (ex : ou=People,o=Company)
+#### $filter
+Additional filters for your LDAP, see LDAP.php class for more information (used to get user informations). Note that the user id (uid) will be add to the filter (concat) to get only user data from the LDAP. The uid is provided by username field in the form from oauth/index.php.
+
+
+To try your configuration you can use ldap.php available at the root of this project which use the LDAP library for PHP or you can use ldapsearch command in a shell.
 
 Configure LDAP is certainly the most difficult step.
 
@@ -128,24 +192,18 @@ I wish to thank my company and my colleagues for their help and support. Also, I
  Try to restart httpd service. If this persists verify your LDAP configuration or your credentials.
 
  * PHP date timezone error
- Edit php.ini to set up date.timezone option and restart httpd service.
+ Edit php.ini to set up date.timezone option and restart httpd service, or use the date_default_timezone_set() function in config_db.php
 
- * Token request failes
+ * Token request failed
  Try to add a new rule in your firewall (or use iptables -F on both Mattermost server and Oauth server)
 
  * .htaccess does not work
- Add following lines to your php.ini and restart httpd service.
+ Add following lines to your httpd.conf and restart httpd service.
  ```
  <Directory "/var/www/html/oauth">
     AllowOverride All
 </Directory>
  ```
-
-
-
-
-
-
 
 
 

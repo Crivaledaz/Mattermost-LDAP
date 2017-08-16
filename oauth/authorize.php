@@ -22,8 +22,9 @@ if (!$server->validateAuthorizeRequest($request, $response)) {
 // if user is not yet authenticated, he is redirected.
 if (!isset($_SESSION['uid']))
 {
-  //store the authorize request 
-  $_SESSION['auth_page']=end(explode("/", strip_tags(trim($_SERVER['REQUEST_URI']))));
+  //store the authorize request
+  $explode_url=explode("/", strip_tags(trim($_SERVER['REQUEST_URI']))); 
+  $_SESSION['auth_page']=end($explode_url);
   header('Location: index.php');
   exit();
 }
@@ -33,7 +34,7 @@ if (!isset($_SESSION['uid']))
 if (empty($_POST)) {
   exit('
 <form method="post">
-  <label>Mattermost wants to access your LDAP informations (ID, complete name, mail) </label><br />
+  <label>Mattermost souhaite accéder à vos données LDAP (Identifiant, nom complet, mail) </label><br />
   <input type="submit" name="authorized" value="Authorize">
   <input type="submit" name="authorized" value="Deny">
 </form>');

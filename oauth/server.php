@@ -3,13 +3,8 @@
  * Adapted from Oauth2-server-php cookbook
  * @see http://bshaffer.github.io/oauth2-server-php-docs/cookbook/
  */
-
-$dsn      = 'pgsql:dbname=oauth_db;host=localhost;port=5432';
-$username = 'oauth';
-$password = 'oauth_secure-pass';
-
-// error reporting (this is a demo, after all!)
-ini_set('display_errors',1);error_reporting(E_ALL);
+// Include database configuration
+require_once('config_db.php');
 
 // Autoloading (composer is preferred, but for this example let's just do this)
 require_once('OAuth2/Autoloader.php');

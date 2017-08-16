@@ -5,16 +5,16 @@ session_start();
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>LDAP Connection Interface</title>
+		<title>Interface de connexion LDAP</title>
 	</head>
 
 	<body>
 		<form method="post" action="connexion.php">
 			<fieldset>
-				<legend>Connection</legend>
+				<legend>Connexion</legend>
 				<p>
-					<label for="user">Username :</label><input name="user" type="text" id="user" /><br />
-					<label for="password">Password :</label><input type="password" name="password" id="password" />
+					<label for="user">Identifiant :</label><input name="user" type="text" id="user" /><br />
+					<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
 				</p>
 			</fieldset>
 

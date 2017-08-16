@@ -28,10 +28,10 @@ $assoc_id = $info_oauth["assoc_id"];
 
 //##################################################\\
 //    /!\   Adapt here with your LDAP config   /!\  \\
+//       Now you can do this in ldap_config.php     \\
 //##################################################\\
 
-$base = "o=Company";
-$filter = "uid=" . $uid;
+$filter = $filter . "uid=" . $uid;
 
 /****************************************************/
 

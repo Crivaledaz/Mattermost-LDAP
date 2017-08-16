@@ -12,7 +12,7 @@ require_once __DIR__.'/LDAP/config_ldap.php';
 // Verify all fields have been filled 
 if (empty($_POST['user']) || empty($_POST['password'])) 
 {
-	echo 'You must fill each field';
+	echo 'You must fill each field<br /><br />';
 	echo 'Click <a href="./index.php">here</a> to come back to login page';
 }
 else
@@ -20,12 +20,12 @@ else
 	// Check received data length (to prevent code injection) 
 	if (strlen($_POST['user']) > 15)
  	{
-  		echo 'Strange username ... Please try again';
+  		echo 'Strange username ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     }
     elseif (strlen($_POST['password']) > 50 || strlen($_POST['password']) <= 7)
     {
-    	echo 'Strange password ... Please try again';
+    	echo 'Strange password ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     } 
     else
@@ -41,9 +41,10 @@ else
     	
     	//##################################################\\
     	//    /!\   Adapt here with your LDAP config   /!\  \\
+    	//       Now you can do this in ldap_config.php     \\
     	//##################################################\\
     	
-    	$rdn = 'uid=' . $user . ',ou=People,o=Company';
+    	$rdn = 'uid=' . $user . $rdn_suffix;
 
 		/****************************************************/
 		
@@ -67,7 +68,7 @@ else
 	    // check login on LDAP has failed. Login and password were invalid or LDAP is unreachable
 		else 
 		{
-		echo "Authetification failed ... Check your username and password.<br />If error persist contact your administrator.<br /><br />";
+		echo "Authentication failed ... Check your username and password.<br />If error persist contact your administrator.<br /><br />";
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
 		}
 	}

@@ -1,24 +1,10 @@
 #!/bin/bash
 #This script need right to become mysql user (so root) and to read/write in httpd directory
 
-#######################################--CONFIGURATION--###########################################
+source config_init.sh
 
-#Client configuration
-client_id=`openssl rand -hex 32`
-client_secret=`openssl rand -hex 32`
-redirect_uri="http://hostname.com:8065/signup/gitlab/complete"
-grant_types="authorization_code"
-scope="api"
-user_id=""
-
-#Database configuration
-oauth_user="oauth"
-oauth_db_name="oauth_db"
-oauth_pass="oauth_secure-pass"
-ip="127.0.0.1"
-port="3306"
+#If script does not work, fill the following variable with the mysql account password 
 mysql_pass=""
-
 #######################################--Fonctions--###############################################
 
 ok() { echo -e '\e[32m'$1'\e[m'; }
