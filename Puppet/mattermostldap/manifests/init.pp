@@ -20,6 +20,8 @@ class mattermostldap (
 	$scope			= $mattermostldap::params::scope,
 	$user_id		= $mattermostldap::params::user_id,
 	$timezone		= $mattermostldap::params::timezone,
+	$ldap_bind_rdn	= $mattermostldap::params::ldap_bind_rdn,
+	$ldap_bind_pass	= $mattermostldap::params::ldap_bind_pass,
 
 ) inherits mattermostldap::params {
 	
@@ -44,7 +46,9 @@ class mattermostldap (
 	validate_string($grant_types)
 	validate_string($scope)
 	validate_string($user_id)
-	validate_string($timezone)	
+	validate_string($timezone)
+	validate_string($ldap_bind_rdn)
+	validate_string($ldap_bind_pass)		
 
 
 

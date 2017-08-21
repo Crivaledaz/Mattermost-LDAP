@@ -28,9 +28,13 @@ interface LDAPInterface
      * The LDAP base DN. 
      * @param string @filter
      * A filter to get relevant data. Often the user id in ldap (uid or sAMAccountName). 
-     * 
+     * @param string @bind_dn
+     * The directory name of a service user to bind before search. Must be a user with read permission on LDAP. 
+     * @param string @bind_pass
+     * The password associated to the service user to bind before search. 
+     *
      * @return 
      * An array with the user's mail and complete name.
      */
-    public function getDataForMattermost($base_dn, $filter);
+    public function getDataForMattermost($base_dn, $filter,$bind_dn,$bind_pass);
 }

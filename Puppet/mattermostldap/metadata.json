@@ -1,6 +1,6 @@
 {
   "name": "Crivaledaz-mattermostldap",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Crivaledaz",
   "summary": "Puppet module for the plugin Mattermost-LDAP",
   "license": "MIT",
@@ -8,8 +8,7 @@
   "project_page": "https://github.com/Crivaledaz/Mattermost-LDAP",
   "issues_url": null,
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0",
-	"name":"puppet-archive","version_requirement":">= 0.4.4"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},{"name":"puppet-archive","version_requirement":">= 0.4.4"}
   ]
 }
 

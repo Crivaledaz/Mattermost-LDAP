@@ -100,7 +100,7 @@ Hostname or IP address of the database. By default : 127.0.0.1
 #### port
 The port to connect to the database. By default : 5432 (postgres) 		
 #### oauth_db_name
-Database name for oauth server. By default : oauth_db	
+Database name for oauth server. By default	: oauth_db	
 #### client_id	
 The application ID shared with mattermost. This ID should be a random token. You can use openssl to generate this token (openssl rand -hex 32). By default, this variable contain the openssl command, which use the openssl package. The token will be printed at the end of the script. 
 #### client_secret
@@ -140,10 +140,11 @@ Oauth user in the database. This user must have right on the oauth database to s
 Oauth user password in the database. If you use init script make sure to use the same database user. (ex : oauth_secure-pass)
 
 * LDAP config
-Edit oauth/LDAP/config_ldap.php : 
+Edit oauth/LDAP/onfig_ldap.php : 
 1. Provide your ldap address and port.
 2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration, these variables will be use in resource.php.
-3. Change the relative directory name suffix ($rdn) to comply with your LDAP configuration, this variable will be use in connexion.php. 
+3. Change the relative directory name suffix ($rdn) to comply with your LDAP configuration, this variable will be use in connexion.php.
+4. If necessary, you can provide a LDAP account to allow search in LDAP (only restrictive LDAP).  
 
 #### $hostname
 Your LDAP hostname or LDAP IP, to connect to the LDAP server.
@@ -155,6 +156,11 @@ The LDAP Relative Directory Name suffix to identify a user in LDAP, see LDAP.php
 The base directory name of your LDAP server. (ex : ou=People,o=Company)
 #### $filter
 Additional filters for your LDAP, see LDAP.php class for more information (used to get user informations). Note that the user id (uid) will be add to the filter (concat) to get only user data from the LDAP. The uid is provided by username field in the form from oauth/index.php.
+#### $bind_dn
+The LDAP Directory Name of an service account to allow LDAP search. This ption is required if your LDAP is restrictive, else put an empty string (""). (ex : cn=mattermost_ldap,dc=Example,dc=com)
+#### $bind_pass
+The password associated to the service account to allow LDAP search. This ption is required if your LDAP you provide an bind user, else put an empty string ("").
+
 
 
 To try your configuration you can use ldap.php available at the root of this project which use the LDAP library for PHP or you can use ldapsearch command in a shell.

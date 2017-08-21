@@ -68,12 +68,16 @@ class LDAP implements LDAPInterface
      * @param string @base_dn
      * The LDAP base DN. 
      * @param string @filter
-     * A filter to get relevant data. Often the user id in ldap (uid or sAMAccountName). 
+     * A filter to get relevant data. Often the user id in ldap (uid or sAMAccountName).
+     * @param string @bind_dn
+     * The directory name of a service user to bind before search. Must be a user with read permission on LDAP. 
+     * @param string @bind_pass
+     * The password associated to the service user to bind before search. 
      * 
      * @return 
      * An array with the user's mail and complete name.
      */
-    public function getDataForMattermost($base_dn, $filter) {
+    public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass) {
 
     	$attribute=array("cn","mail");
 
@@ -84,6 +88,18 @@ class LDAP implements LDAPInterface
         if (!is_string($filter)) 
         {
             throw new InvalidArgumentException('Second argument to LDAP/getData must be a filter to get relevant data. Often is the user id in ldap (string). Ex : uid=jdupont');
+        }
+
+        // If LDAP service account for search is specified, do an ldap_bind with this account
+        if ($bind_dn != '' && $bind_dn != null)
+        {
+            $bind_result=ldap_bind($this->ldap_server,$bind_dn,$bind_pass);
+
+            // If authentification failed, throw an exception 
+            if (!$bind_result)
+            {
+                throw new Exception('An error has occured during ldap_bind execution. Please check parameter of LDAP/getData, and make sure that user provided have read permission on LDAP.');
+            }
         }
 
         $result = ldap_search($this->ldap_server, $base_dn, $filter, $attribute, 0, 1, 500);

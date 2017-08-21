@@ -10,6 +10,10 @@ $rdn_suffix = "<%= @ldap_rdn %>";
 $base = "<%= @ldap_base %>";
 $filter = "<%= @ldap_filter %>";
 
+// ldap service user to allow search in ldap
+$bind_dn = "<%= @ldap_bind_rdn %>";
+$bind_pass = "<%= @ldap_bind_pass %>";
+
 //add virgule to concat in php script
 if ($filter != "")
 {

@@ -19,4 +19,6 @@ class mattermostldap::params {
   $scope      = 'api'
   $user_id    = ''
   $timezone   = 'Europe/Paris'
+  $ldap_bind_rdn  = '',
+  $ldap_bind_pass = '',
 }
