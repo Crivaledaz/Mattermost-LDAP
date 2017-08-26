@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 /**
  * @author Denis CLAVIER <clavierd at gmail dot com>
  */
@@ -8,6 +7,7 @@ session_start();
 // include our LDAP object
 require_once __DIR__.'/LDAP/LDAP.php';
 require_once __DIR__.'/LDAP/config_ldap.php';
+
 
 // Verify all fields have been filled 
 if (empty($_POST['user']) || empty($_POST['password'])) 
@@ -38,18 +38,9 @@ else
 
     	// Open a LDAP connection
     	$ldap = new LDAP($hostname,$port);
-    	
-    	//##################################################\\
-    	//    /!\   Adapt here with your LDAP config   /!\  \\
-    	//       Now you can do this in ldap_config.php     \\
-    	//##################################################\\
-    	
-    	$rdn = 'uid=' . $user . $rdn_suffix;
-
-		/****************************************************/
 		
 		// Check user credential on LDAP
-		if ($ldap->checkLogin($rdn,$password)) 
+		if ($ldap->checkLogin($user,$password,$search_attribute,$filter,$base,$bind_dn,$bind_pass)) 
 		{
 		    $_SESSION['uid']=$user;
 

@@ -33,11 +33,79 @@ if (!isset($_SESSION['uid']))
 // display an authorization form
 if (empty($_POST)) {
   exit('
-<form method="post">
-  <label>Mattermost souhaite accéder à vos données LDAP (Identifiant, nom complet, mail) </label><br />
-  <input type="submit" name="authorized" value="Authorize">
-  <input type="submit" name="authorized" value="Deny">
-</form>');
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" type="text/css" href="./style.css">
+    <title>Authorisation Mattermost</title>
+  </head>
+
+  <body>
+
+
+<center>
+  <table background="../images/login.png" border="0" width="729" height="343" cellspacing="1" cellpadding="4">
+    <tr>
+      <td width="40%">&nbsp;</td>
+      
+      <td width="60%">
+        <table border="0" width="100%">
+
+          <tr>
+            <td align="center">
+              <div class="LoginTitle">Mattermost souhaite accéder à vos données LDAP :</div>
+        
+
+            <form method="post">
+            
+                <table border="0" width="90%" cellpadding="1">
+                    <tr>
+                      <td colspan="2" align="left">
+                        
+                          <div class="messageLogin" align="center">
+                            
+                          </div>                         
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" width="100%" class="LoginUsername">
+                        Connecté en tant que : <b>' . $_SESSION['uid'] . ' </b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" width="100%" class="LoginUsername">
+                         
+                        <br/>
+                        Données souhaitées : <br/>
+                        &nbsp; -> Identifiant,<br/>
+                        &nbsp; -> Nom complet,<br/> 
+                        &nbsp; -> Email
+                      
+                      </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                      <td colspan="2" align="center"> <input type="submit" class="GreenButton" name="authorized" value="Authorize" > 
+                      <input type="submit" class="GreenButton" name="authorized" value="Deny" > </td>
+
+                    </tr>
+                    
+                    
+                </table>
+              </form>
+              
+          </td>
+          </tr>
+        </table>
+      
+      </td>
+    </tr>
+  </table>
+</center>
+  </body>
+</html>
+');
 }
 
 // print the authorization code if the user has authorized your client
@@ -54,3 +122,10 @@ if ($is_authorized)
 
 // Send message in case of error
 $response->send();
+
+/*<form method="post">
+  <label>Mattermost souhaite accéder à vos données LDAP (Identifiant, nom complet, mail) </label><br />
+  <input type="submit" name="authorized" value="Authorize">
+  <input type="submit" name="authorized" value="Deny">
+</form>
+*/

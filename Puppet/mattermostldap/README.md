@@ -80,7 +80,7 @@ class { 'mattermostldap':
 	  	ldap_base    => 'o=Company',
 	  	ldap_uri   => 'ldap://company.org',
 	  	ldap_port    => 389,
-	  	ldap_rdn   => 'ou=People,o=Company',
+	  	ldap_attribute   => 'uid',
 	  	db_user    => 'oauth',
 	  	db_pass    => 'oauth_secure-pass',
 	  	db_name    => 'oauth_db',
@@ -152,7 +152,7 @@ Below, there is an example of Mattermost-LDAP Puppet module using Mattermost and
 	  	ldap_base    => 'o=Company',
 	  	ldap_uri   => 'ldap://company.com',
 	  	ldap_port    => 389,
-	  	ldap_rdn   => 'ou=People,o=Company',
+	  	ldap_attribute   => 'uid',
 	  	db_user    => 'oauth',
 	  	db_pass    => 'oauth_secure-pass',
 	  	db_name    => 'oauth_db',
@@ -186,13 +186,13 @@ Directory where the Oauth server will be installed, by default /var/www/html/. T
 #### ldap_base (Required)
 The base directory name of your LDAP server. (ex : ou=People,o=Company)		
 #### ldap_filter (Optional)
-Additional filters for your LDAP, see LDAP.php class for more information (use by resource.php to get user informations)
+Additional filters to search in LDAP (used to get user informations). (ex : objectClass=person)
 #### ldap_uri (Required)
 Your LDAP hostname or LDAP IP, to connect the LDAP server.		
 #### ldap_port (Optional)
 Your LDAP port, to connect the LDAP server. By default : 389.			
-#### ldap_rdn (Required)
-The LDAP Relative Directory Name suffixto identify a user in LDAP, see LDAP.php class for more information (use by authorize.php to check user credentials on LDAP) 		
+#### ldap_attribute (Required)
+The attribute used to identify user on your LDAP. Should be uid, email, cn or sAMAccountName.		
 #### db_user (Optional)
 Oauth user in the database. This user must have right on the oauth database to store oauth tokens. By default : oauth	
 #### db_pass (Optional)

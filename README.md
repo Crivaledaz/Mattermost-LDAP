@@ -140,22 +140,22 @@ Oauth user in the database. This user must have right on the oauth database to s
 Oauth user password in the database. If you use init script make sure to use the same database user. (ex : oauth_secure-pass)
 
 * LDAP config
-Edit oauth/LDAP/onfig_ldap.php : 
+Edit oauth/LDAP/config_ldap.php : 
 1. Provide your ldap address and port.
-2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration, these variables will be use in resource.php.
-3. Change the relative directory name suffix ($rdn) to comply with your LDAP configuration, this variable will be use in connexion.php.
+2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration.
+3. Change the user ID attribute ($ldap_attribute) to comply with your LDAP configuration (uid, sAMAccountName, email, cn ..).
 4. If necessary, you can provide a LDAP account to allow search in LDAP (only restrictive LDAP).  
 
 #### $hostname
 Your LDAP hostname or LDAP IP, to connect to the LDAP server.
 #### $port
 Your LDAP port, to connect to the LDAP server. By default : 389.
-#### $rdn
-The LDAP Relative Directory Name suffix to identify a user in LDAP, see LDAP.php class for more information (use to check user credentials on LDAP). Note that user id (uid) will be add to this suffix to produce a complete relative directory name. The uid is provided by username field in the form from oauth/index.php. For more information, refer to ldap_bind() in php documentation.
+#### $search_attribute
+The attribute used to identify user on your LDAP. Should be uid, email, cn or sAMAccountName.
 #### $base
 The base directory name of your LDAP server. (ex : ou=People,o=Company)
 #### $filter
-Additional filters for your LDAP, see LDAP.php class for more information (used to get user informations). Note that the user id (uid) will be add to the filter (concat) to get only user data from the LDAP. The uid is provided by username field in the form from oauth/index.php.
+Additional filters to search in LDAP (used to get user informations). (ex : objectClass=person)
 #### $bind_dn
 The LDAP Directory Name of an service account to allow LDAP search. This ption is required if your LDAP is restrictive, else put an empty string (""). (ex : cn=mattermost_ldap,dc=Example,dc=com)
 #### $bind_pass

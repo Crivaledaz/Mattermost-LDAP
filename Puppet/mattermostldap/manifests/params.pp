@@ -6,7 +6,7 @@ class mattermostldap::params {
   $ldap_filter  = ''
   $ldap_uri   = 'ldap://hostname.com'
   $ldap_port    = 389
-  $ldap_rdn   = 'ou=People,o=Company'
+  $ldap_attribute   = 'uid'
   $db_user    = 'oauth'
   $db_pass    = 'oauth_secure-pass'
   $db_host    = 'localhost'
@@ -19,6 +19,6 @@ class mattermostldap::params {
   $scope      = 'api'
   $user_id    = ''
   $timezone   = 'Europe/Paris'
-  $ldap_bind_rdn  = '',
-  $ldap_bind_pass = '',
+  $ldap_bind_dn  = ''
+  $ldap_bind_pass = ''
 }

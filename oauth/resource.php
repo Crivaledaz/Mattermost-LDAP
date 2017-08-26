@@ -23,17 +23,8 @@ $resp = array("error" => "Unknow error", "message" => "An unknown error has occu
 
 // get information on user associated to the token
 $info_oauth = $server->getAccessTokenData(OAuth2\Request::createFromGlobals());
-$uid = $info_oauth["user_id"];
+$user = $info_oauth["user_id"];
 $assoc_id = $info_oauth["assoc_id"];
-
-//##################################################\\
-//    /!\   Adapt here with your LDAP config   /!\  \\
-//       Now you can do this in ldap_config.php     \\
-//##################################################\\
-
-$filter = $filter . "uid=" . $uid;
-
-/****************************************************/
 
 // Open a LDAP connection
 $ldap = new LDAP($hostname,$port);
@@ -41,8 +32,8 @@ $ldap = new LDAP($hostname,$port);
 // Try to get user data on the LDAP
 try
 {
-	$data = $ldap->getDataForMattermost($base,$filter,$bind_dn,$bind_pass);
-	$resp = array("name" => $data['cn'],"username" => $uid,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
+	$data = $ldap->getDataForMattermost($base,$filter,$bind_dn,$bind_pass,$search_attribute,$user);
+	$resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
 }
 catch (Exception $e)
 {

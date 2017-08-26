@@ -3,24 +3,15 @@
 $hostname = "<%= @ldap_uri %>";
 $port = <%= @ldap_port %>;
 
-// variable use in connexion.php 
-$rdn_suffix = "<%= @ldap_rdn %>";
+// Attribute use to identify user on LDAP (used in connexion.php, replace $rdn_suffix) - ex : uid, mail, sAMAccountName	
+$search_attribute = "<%= @ldap_attribute %>";
 
-// variable use in resource.php 
+// Base directory name of the LDAP 
 $base = "<%= @ldap_base %>";
+
+// An optional filter to search in LDAP - ex : objectClass=person
 $filter = "<%= @ldap_filter %>";
 
 // ldap service user to allow search in ldap
-$bind_dn = "<%= @ldap_bind_rdn %>";
+$bind_dn = "<%= @ldap_bind_dn %>";
 $bind_pass = "<%= @ldap_bind_pass %>";
-
-//add virgule to concat in php script
-if ($filter != "")
-{
-	$filter = "," . $filter;
-}
-
-if ($rdn_suffix != "")
-{
-	$rdn_suffix = "," . $rdn_suffix;
-}

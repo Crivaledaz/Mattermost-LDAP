@@ -6,7 +6,7 @@ class mattermostldap (
 	$ldap_filter	= $mattermostldap::params::ldap_filter,
 	$ldap_uri		= $mattermostldap::params::ldap_uri,
 	$ldap_port		= $mattermostldap::params::ldap_port,	
-	$ldap_rdn		= $mattermostldap::params::ldap_rdn,
+	$ldap_attribute	= $mattermostldap::params::ldap_attribute,
 	$db_user		= $mattermostldap::params::db_user,
 	$db_pass		= $mattermostldap::params::db_pass,
 	$db_host		= $mattermostldap::params::db_host,
@@ -20,7 +20,7 @@ class mattermostldap (
 	$scope			= $mattermostldap::params::scope,
 	$user_id		= $mattermostldap::params::user_id,
 	$timezone		= $mattermostldap::params::timezone,
-	$ldap_bind_rdn	= $mattermostldap::params::ldap_bind_rdn,
+	$ldap_bind_dn	= $mattermostldap::params::ldap_bind_dn,
 	$ldap_bind_pass	= $mattermostldap::params::ldap_bind_pass,
 
 ) inherits mattermostldap::params {
@@ -32,7 +32,7 @@ class mattermostldap (
 	validate_string($ldap_filter)
 	validate_string($ldap_uri)
 	validate_integer($ldap_port)
-	validate_string($ldap_rdn)
+	validate_string($ldap_attribute)
 	validate_string($db_user)
 	validate_string($db_pass)
 	validate_string($db_host)
@@ -47,7 +47,7 @@ class mattermostldap (
 	validate_string($scope)
 	validate_string($user_id)
 	validate_string($timezone)
-	validate_string($ldap_bind_rdn)
+	validate_string($ldap_bind_dn)
 	validate_string($ldap_bind_pass)		
 
 

@@ -56,7 +56,7 @@ node 'bepo'
 	  	ldap_filter  => '',
 	  	ldap_uri   => 'ldap://company.com',
 	  	ldap_port    => 389,
-	  	ldap_rdn   => 'ou=People,o=Company',
+	  	ldap_attribute   => 'uid',
 	  	db_user    => 'oauth',
 	  	db_pass    => 'oauth_secure-pass',
 	  	db_name    => 'oauth_db',
