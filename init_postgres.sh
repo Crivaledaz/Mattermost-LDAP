@@ -1,7 +1,7 @@
 #!/bin/bash
 #This script need right to become postgres user (so root) and to read/write in httpd directory
 
-source conf_init.sh
+source config_init.sh
 
 #######################################--Fonctions--###############################################
 
