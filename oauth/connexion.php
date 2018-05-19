@@ -45,7 +45,7 @@ else
 		}
 		catch (Exception $e)
 		{
-			echo json_encode(array("error" => "Impossible to get data", "message" => $e->getMessage()));
+			$resp = json_encode(array("error" => "Impossible to get data", "message" => $e->getMessage()));
 			$authenticated = false;
 		}
 
@@ -71,6 +71,7 @@ else
 		{
 		echo "Authentication failed ... Check your username and password.<br />If error persist contact your administrator.<br /><br />";
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
+		echo '<br /><br /><br />' . $resp;
 		}
 	}
 }

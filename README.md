@@ -164,7 +164,7 @@ Your LDAP hostname or LDAP IP, to connect to the LDAP server.
 #### $port
 Your LDAP port, to connect to the LDAP server. By default : 389.
 #### $ldap_version
-Your LDAP version, or protocol version used by your server. By default : 3. This parameter avoid LDAP blind error with LDAP 3 (issue )
+Your LDAP version, or protocol version used by your server. By default : 3. This parameter avoid LDAP blind error with LDAP 3 (issue #14)
 #### $search_attribute
 The attribute used to identify user on your LDAP. Should be uid, email, cn or sAMAccountName.
 #### $base
