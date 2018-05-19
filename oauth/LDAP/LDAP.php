@@ -19,11 +19,13 @@ class LDAP implements LDAPInterface
      * @param string @hostname
      * Either a hostname or, with OpenLDAP 2.x.x and later, a full LDAP URI
      * @param int @port
-     * An optional int to specify ldap server port
+     * An optional int to specify ldap server port, by default : 389
+     * @param int @ldap_version
+     * An optional int to specify ldap version, by default LDAP V3 protocol is used
      * 
      * Initiate LDAP connection by creating an associated resource  
      */
-    public function __construct($hostname, $port = 389)
+    public function __construct($hostname, $port = 389, $ldap_version = 3)
     {
         if (!is_string($hostname)) 
         {
@@ -37,6 +39,16 @@ class LDAP implements LDAPInterface
 
         $ldap = ldap_connect($hostname, $port) 
         	or die("Unable to connect to the ldap server : $ldaphost ! Please check your configuration.");
+
+        // Support LDAP V3 since many users have encountered difficulties with LDAP V3.
+        if (is_int($ldap_version) && $ldap_version <= 3 && $ldap_version > 0)
+        {
+            ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, $ldap_version);
+        }
+        else
+        {
+            throw new InvalidArgumentException('Third argument to LDAP must be the ldap version (int). Ex : 3');
+        }
 
         $this->ldap_server = $ldap;
     }
@@ -148,7 +160,7 @@ class LDAP implements LDAPInterface
      * A ldap username or email or sAMAccountName  
      * 
      * @return 
-     * An array with the user's mail and complete name.
+     * An array with the user's mail, complete name and directory name.
      */
     public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user) {
 

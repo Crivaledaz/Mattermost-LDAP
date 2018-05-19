@@ -44,7 +44,7 @@ interface LDAPInterface
      * A ldap username or email or sAMAccountName  
      * 
      * @return 
-     * An array with the user's mail and complete name.
+     * An array with the user's mail, complete name and directory name.
      */
     public function getDataForMattermost($base_dn, $filter, $bind_dn, $bind_pass, $search_attribute, $user);
 }

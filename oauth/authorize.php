@@ -54,7 +54,7 @@ if (empty($_POST)) {
 
           <tr>
             <td align="center">
-              <div class="LoginTitle">Mattermost souhaite accéder à vos données LDAP :</div>
+              <div class="LoginTitle">Mattermost desires access to your LDAP data:</div>
         
 
             <form method="post">
@@ -71,16 +71,16 @@ if (empty($_POST)) {
                     </tr>
                     <tr>
                       <td align="center" width="100%" class="LoginUsername">
-                        Connecté en tant que : <b>' . $_SESSION['uid'] . ' </b>
+                        Login as : <b>' . $_SESSION['uid'] . ' </b>
                       </td>
                     </tr>
                     <tr>
                       <td align="left" width="100%" class="LoginUsername">
                          
                         <br/>
-                        Données souhaitées : <br/>
-                        &nbsp; -> Identifiant,<br/>
-                        &nbsp; -> Nom complet,<br/> 
+                        Requested Data : <br/>
+                        &nbsp; -> Username,<br/>
+                        &nbsp; -> Full Name,<br/> 
                         &nbsp; -> Email
                       
                       </td>
@@ -115,7 +115,7 @@ $server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['u
 
 if ($is_authorized) 
 {
-  // this is only here so that you get to see your code in the cURL request. Otherwise, we'd redirect back to the client
+  // This is only here so that you get to see your code in the cURL request. Otherwise, we'd redirect back to the client
   $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);
   header('Location: ' . $response->getHttpHeader('Location'));
   exit();
@@ -123,10 +123,3 @@ if ($is_authorized)
 
 // Send message in case of error
 $response->send();
-
-/*<form method="post">
-  <label>Mattermost souhaite accéder à vos données LDAP (Identifiant, nom complet, mail) </label><br />
-  <input type="submit" name="authorized" value="Authorize">
-  <input type="submit" name="authorized" value="Deny">
-</form>
-*/

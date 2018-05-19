@@ -12,7 +12,7 @@ require_once __DIR__.'/LDAP/config_ldap.php';
 // Verify all fields have been filled 
 if (empty($_POST['user']) || empty($_POST['password'])) 
 {
-	echo 'You must fill each field<br /><br />';
+	echo 'Please fill in your Username and Password<br /><br />';
 	echo 'Click <a href="./index.php">here</a> to come back to login page';
 }
 else
@@ -20,12 +20,12 @@ else
 	// Check received data length (to prevent code injection) 
 	if (strlen($_POST['user']) > 15)
  	{
-  		echo 'Strange username ... Please try again<br /><br />';
+  		echo 'Username has incorrect format ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     }
     elseif (strlen($_POST['password']) > 50 || strlen($_POST['password']) <= 7)
     {
-    	echo 'Strange password ... Please try again<br /><br />';
+    	echo 'Password has incorrect format ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     } 
     else
@@ -37,10 +37,20 @@ else
     	$password=$_POST['password'];
 
     	// Open a LDAP connection
-    	$ldap = new LDAP($hostname,$port);
+    	$ldap = new LDAP($hostname,$port,$ldap_version);
 		
 		// Check user credential on LDAP
-		if ($ldap->checkLogin($user,$password,$search_attribute,$filter,$base,$bind_dn,$bind_pass)) 
+		try{
+			$authenticated = $ldap->checkLogin($user,$password,$search_attribute,$filter,$base,$bind_dn,$bind_pass);
+		}
+		catch (Exception $e)
+		{
+			echo json_encode(array("error" => "Impossible to get data", "message" => $e->getMessage()));
+			$authenticated = false;
+		}
+
+		// If user is authenticated
+		if ($authenticated) 
 		{
 		    $_SESSION['uid']=$user;
 

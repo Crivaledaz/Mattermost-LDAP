@@ -50,8 +50,17 @@ sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo 
 #For MySQL
 sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
 ```
+Setup your SQL server with the following command :
+```
+#For PostgreSQL (create a new database cluster)
+sudo postgresql-setup initdb
 
-Start and enable service for Apache and Database (for all distribution using systemd):
+#For MySQL (optional configuration for a secure MySQL server)
+sudo mysql_secure_installation
+```
+By default, PostgreSQL does not allow client authentication on the server or a database. So we need to enable it by editing pg_hba.conf file (in /var/lib/pgsql). Open this file and replace 'ident' by 'md5' on the first three lines (local, host 127.0.0.1 and host ::1/128). It's recommended to backup the original file before editing it.
+
+Then, start and enable service for Apache and Database (for all distribution using systemd):
 ```
 #For PostgreSQL
 sudo systemctl start httpd
@@ -90,6 +99,8 @@ This script will automatically create and add a new client in the oauth server, 
 
 ## Configuration
 
+Configuration files are provided with examples and default values. Each config file has an ".example" extension, so you need to copy and to rename them without this extension. You can find a detailed description of each parameters available below.
+
 * Init script configuration :
 #### oauth_user
 Oauth user in the database. This user must have right on the oauth database to store oauth tokens. By default : oauth	
@@ -121,7 +132,9 @@ User API Endpoint : http://HOSTNAME/oauth/resource.php
 Auth Endpoint: http://HOSTNAME/oauth/authorize.php
 Token Endpoint: http://HOSTNAME/oauth/token.php
 ```
-Change HOSTNAME by hostname or ip of the server where you have installed Mattermost-LDAP module. 
+Change HOSTNAME by hostname or ip of the server where you have installed Mattermost-LDAP module.
+
+In Mattermost 4.9, these fields are disable  in admin panel, so you need to edit directly the configuration file config.json. 
 
 * Database credentials
 Edit oauth/config_db.php and adapt, with your settings, to set up database in PHP.
@@ -141,7 +154,7 @@ Oauth user password in the database. If you use init script make sure to use the
 
 * LDAP config
 Edit oauth/LDAP/config_ldap.php : 
-1. Provide your ldap address and port.
+1. Provide your ldap address, port and version.
 2. Change the base directory name ($base) and the filter ($filter) to comply with your LDAP configuration.
 3. Change the user ID attribute ($ldap_attribute) to comply with your LDAP configuration (uid, sAMAccountName, email, cn ..).
 4. If necessary, you can provide a LDAP account to allow search in LDAP (only restrictive LDAP).  
@@ -150,6 +163,8 @@ Edit oauth/LDAP/config_ldap.php :
 Your LDAP hostname or LDAP IP, to connect to the LDAP server.
 #### $port
 Your LDAP port, to connect to the LDAP server. By default : 389.
+#### $ldap_version
+Your LDAP version, or protocol version used by your server. By default : 3. This parameter avoid LDAP blind error with LDAP 3 (issue )
 #### $search_attribute
 The attribute used to identify user on your LDAP. Should be uid, email, cn or sAMAccountName.
 #### $base
@@ -174,7 +189,7 @@ Keep in mind this will create a new account on your Mattermost server with infor
 
 
 ## Limitation
-This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL.
+This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL and Mattermost Community Edition version 4.1 and 4.9.
 
 Others operating systems has not been tested yet but should work fine. 
 

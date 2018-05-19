@@ -7,6 +7,9 @@ error_reporting(E_ALL);
 //Ldap adress and port 
 $hostname = "ldap://company.com:389";
 
+//LDAP version
+$ldap_version = 3;
+
 //Unique identifier of user on LDAP
 $uid = "username";
 $email = "username@company.com";
@@ -25,6 +28,7 @@ $base = "ou=People,o=Company";
 echo "<h3>LDAP : Test Center</h3>";
 echo "Attempting to connect LDAP server ... <br />";
 $ldap=ldap_connect($hostname);
+ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, $ldap_version);
 
 if ($ldap) {
 	echo "Successful connection ! <br />"; 
