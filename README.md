@@ -189,9 +189,9 @@ Keep in mind this will create a new account on your Mattermost server with infor
 
 
 ## Limitation
-This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL and Mattermost Community Edition version 4.1 and 4.9.
+This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL and Mattermost Community Edition version 4.1, 4.9 and 5.0.1. Mattermost-LDAP is compliant with Mattermost Team Edition 4.x.x and 5.x.x.
 
-Others operating systems has not been tested yet but should work fine. 
+Others operating systems has not been tested yet but should work fine.
 
 MySQL has not really been tested so it is possible there is some bugs with.
 
