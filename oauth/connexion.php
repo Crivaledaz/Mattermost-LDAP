@@ -18,7 +18,7 @@ if (empty($_POST['user']) || empty($_POST['password']))
 else
 {
 	// Check received data length (to prevent code injection) 
-	if (strlen($_POST['user']) > 15)
+	if (strlen($_POST['user']) > 64)
  	{
   		echo 'Username has incorrect format ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
