@@ -1,0 +1,25 @@
+version: "2"
+
+services:
+
+  web:
+    image: mattermost-ldap:1
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+      - "444:443"
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+      - ./volumes/cert:/etc/nginx/cert
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - LDAP_URI=ldaps://ldap.company.com/
+      - LDAP_PORT=636
+      - LDAP_SEARCH_ATTRIBUTE=mail
+      - LDAP_BASE=ou=people,dc=company,dc=com
+      - LDAP_BIND_DN=userid=ldapreader,dc=company,dc=com
+      - LDAP_BIND_PASS=ldappassword
+      - DB_USER=oauth
+      - DB_PASS=oauth_secure-pass
+      - MATTERMOST_URL=https://mattermost.company.com
+
