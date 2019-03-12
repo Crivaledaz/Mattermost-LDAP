@@ -15,7 +15,77 @@ The Mattermost-LDAP project uses the Gitlab authentication feature from Mattermo
 
 This module provides an Oauth2 server designed for php, a LDAP connector for PHP and some files for automatic configuration. Once installed and configured with Mattermost, the module allows LDAP authentication by replacing Gitlab SSO. This module allows many configuration settings to try to comply with your settings and configuration. Mattermost-LDAP can be used with MySQL or PostgreSQL database on many operating systems. See Limitation section for more information. 
 
-## Setup 
+## Docker Setup
+### Requirements
+This method requires only docker, and optionally docker-compose.
+
+First, build the image:
+```
+# docker build -t mattermost-ldap:1 .
+```
+
+### Install with docker compose
+Edit docker-compose.yml to set suitable values :
+```
+    environment:
+      - LDAP_URI=ldaps://ldap.company.com/
+      - LDAP_PORT=636
+      - LDAP_SEARCH_ATTRIBUTE=mail
+      - LDAP_BASE=ou=people,dc=company,dc=com
+      - LDAP_BIND_DN=userid=ldapreader,dc=company,dc=com
+      - LDAP_BIND_PASS=ldappassword
+      - DB_USER=oauth
+      - DB_PASS=oauth_secure-pass
+      - MATTERMOST_URL=https://mattermost.company.com
+```
+
+If you want to use https, you can install your key and certificate, in PEM format, to:
+
+* `./volumes/cert/key-no-password.pem`
+* `./volumes/cert/cert.pem`
+
+You're now ready to start the container:
+```
+# docker-compose up -d
+```
+
+### Install with docker
+You can also start the container using simply `docker`:
+```
+# docker run -d \
+	--name mattermost-ldap \
+	-p 8000:80 \
+	-p 444:443 \
+	-e LDAP_URI='ldaps://ldap.company.com/' \
+	-e LDAP_PORT=636 \
+	-e LDAP_SEARCH_ATTRIBUTE='mail' \
+	-e LDAP_BASE='ou=people,dc=company,dc=com' \
+	-e LDAP_BIND_DN='userid=ldapreader,dc=company,dc=com' \
+	-e LDAP_BIND_PASS='ldappassword' \
+	-e DB_USER='oauth' \
+	-e DB_PASS='oauth_secure-pass' \
+	-e MATTERMOST_URL='https://mattermost.company.com' \
+	-v `pwd`/volumes/db:/var/lib/postgresql/data:rw \
+	-v `pwd`/volumes/cert/:/etc/nginx/cert:rw \
+	mattermost-ldap:1
+```
+
+### Connect to Mattermost
+Watch the docker container logs to get the CLIENT_ID and CLIENT_SECRET that you will have to paste into your Mattermost installation:
+```
+# docker logs -f mattermostldap_web_1
+...
+Database initialised
+CLIENT_ID: 47352e825e5131af077737103cff50a46a5c809eeed1366128fd9e339a06523f
+CLIENT_SECRET: f97e04dff67b1af756cbb7a13e654b9d981be6e6fa90541e20288890c3c9671f
+...
+```
+
+That's it, you're done.
+
+The nginx configuration redirects from `/api/v4/user` to `/oauth/resource.php`, from `/oauth/authorize` to `/oauth/authorize.php`, and from `oauth/token` to `oauth/token.php`, which allows configuring mattermost without changing its `config.json` file.
+
+## Manual Setup 
 ### Requirements
 This module requires the following : 
 
