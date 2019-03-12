@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mkdir -p /run/php/
+exec /usr/sbin/php-fpm7.0 --nodaemonize -R
+

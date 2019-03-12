@@ -1,0 +1,18 @@
+server {
+	listen 443;
+
+	ssl on;
+	ssl_certificate /etc/nginx/cert/cert.pem;
+	ssl_certificate_key /etc/nginx/cert/key-no-password.pem;
+
+	root /var/www/html;
+
+	index index.php index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		proxy_pass http://127.0.0.1;
+	}
+}
+

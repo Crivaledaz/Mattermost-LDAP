@@ -1,0 +1,32 @@
+server {
+	listen 80 default_server;
+
+	root /var/www/html;
+
+	index index.php index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location /api/v4/user {
+		try_files $uri /oauth/resource.php$is_args$args;
+	}
+
+	location /oauth/authorize {
+		try_files $uri /oauth/authorize.php$is_args$args;
+	}
+
+	location /oauth/token {
+		try_files $uri /oauth/token.php$is_args$args;
+	}
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	
+		fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+	}
+}
+

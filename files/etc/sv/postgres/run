@@ -1,0 +1,2 @@
+#!/bin/bash
+setuidgid postgres /usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/data
