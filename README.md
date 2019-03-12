@@ -25,7 +25,7 @@ First, build the image:
 ```
 
 ### Install with docker compose
-Edit docker-compose.yml to set suitable values :
+Edit `docker-compose.yml` to set suitable values :
 ```
     environment:
       - LDAP_URI=ldaps://ldap.company.com/
@@ -53,9 +53,9 @@ You're now ready to start the container:
 You can also start the container using simply `docker`:
 ```
 # docker run -d \
-	--name mattermost-ldap \
-	-p 8000:80 \
-	-p 444:443 \
+	--name mattermostldap_web_1 \
+	-p 80:80 \
+	-p 443:443 \
 	-e LDAP_URI='ldaps://ldap.company.com/' \
 	-e LDAP_PORT=636 \
 	-e LDAP_SEARCH_ATTRIBUTE='mail' \

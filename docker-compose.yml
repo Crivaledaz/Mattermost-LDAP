@@ -6,8 +6,8 @@ services:
     image: mattermost-ldap:1
     restart: unless-stopped
     ports:
-      - "8000:80"
-      - "444:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
       - ./volumes/cert:/etc/nginx/cert
