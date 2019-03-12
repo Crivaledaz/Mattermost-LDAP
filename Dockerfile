@@ -1,6 +1,6 @@
 FROM debian:stretch
 
-COPY config_init.sh init_postgres.sh /
+COPY init_postgres.sh /
 COPY files/ /
 
 RUN apt-get update && \
