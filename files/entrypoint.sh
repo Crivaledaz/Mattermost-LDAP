@@ -70,7 +70,7 @@ fi
 
 if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
 	mkdir -p /var/lib/postgresql/data
-	chown postgres /var/lib/postgresql/data
+	chown postgres:postgres /var/lib/postgresql/data
 	setuidgid postgres /usr/lib/postgresql/9.6/bin/initdb /var/lib/postgresql/data
 	setuidgid postgres /usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/data &
 	sleep 5
@@ -80,6 +80,9 @@ if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
 	echo "Database initialised"
 	echo "CLIENT_ID: $CLIENT_ID"
 	echo "CLIENT_SECRET: $CLIENT_SECRET"
+elif [ -d /var/lib/postgresql/data ]; then
+	chown -R postgres:postgres /var/lib/postgresql/data
+	echo "Database was pre-existing"
 fi
 
 
