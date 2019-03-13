@@ -18,6 +18,38 @@ MATTERMOST_URL=${MATTERMOST_URL:-https://mattermost.company.com}
 CLIENT_ID=${CLIENT_ID:-$RND_CLIENT_ID}
 CLIENT_SECRET=${CLIENT_SECRET:-$RND_CLIENT_SECRET}
 
+#Check if DB exists, get values from there if so
+if [ -f /var/lib/postgresql/data/PG_VERSION ]; then
+	chown -R postgres:postgres /var/lib/postgresql/data
+	chmod 700 /var/lib/postgresql/data
+	echo "Database was pre-existing"
+
+	setuidgid postgres /usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/data &
+	sleep 5
+
+	EXISTING_CLIENT_ID=$(echo -e "\\x \nSELECT client_id FROM oauth_clients;" \
+		| psql postgres://$DB_USER:$DB_PASS@localhost/oauth_db \
+		| grep client_id \
+		| cut -d' ' -f3)
+	EXISTING_CLIENT_SECRET=$(echo -e "\\x \nSELECT client_secret FROM oauth_clients;" \
+		| psql postgres://$DB_USER:$DB_PASS@localhost/oauth_db \
+		| grep client_secret \
+		| cut -d' ' -f3)
+	EXISTING_MATTERMOST_URL=$(echo -e "\\x \nSELECT redirect_uri FROM oauth_clients;" \
+		| psql postgres://$DB_USER:$DB_PASS@localhost/oauth_db \
+		| grep redirect_uri \
+		| cut -d' ' -f3 \
+		| sed "s/\/signup.*//")
+
+	killall postgres
+
+	if [ "$EXISTING_CLIENT_ID" != "" -a "$EXISTING_CLIENT_SECRET" != "" -a "EXISTING_MATTERMOST_URL" != "" ]; then
+		CLIENT_ID=$EXISTING_CLIENT_ID
+		CLIENT_SECRET=$EXISTING_CLIENT_SECRET
+		MATTERMOST_URL=$EXISTING_MATTERMOST_URL
+	fi
+fi
+
 #LDAP parameters
 cat << EOF > /var/www/html/oauth/LDAP/config_ldap.php
 <?php
@@ -72,6 +104,7 @@ if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
 	mkdir -p /var/lib/postgresql/data
 	chown postgres:postgres /var/lib/postgresql/data
 	setuidgid postgres /usr/lib/postgresql/9.6/bin/initdb /var/lib/postgresql/data
+
 	setuidgid postgres /usr/lib/postgresql/9.6/bin/postgres -D /var/lib/postgresql/data &
 	sleep 5
 	/init_postgres.sh
@@ -80,8 +113,7 @@ if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
 	echo "Database initialised"
 	echo "CLIENT_ID: $CLIENT_ID"
 	echo "CLIENT_SECRET: $CLIENT_SECRET"
-elif [ -d /var/lib/postgresql/data ]; then
-	chown -R postgres:postgres /var/lib/postgresql/data
+else
 	echo "Database was pre-existing"
 fi
 
