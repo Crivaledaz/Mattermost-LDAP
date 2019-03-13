@@ -7,5 +7,6 @@ RUN apt-get update && \
 	apt-get -y -o Dpkg::Options::="--force-confold" install sudo nginx-light php-fpm postgresql-client postgresql php-ldap php-pdo php-pgsql git runit daemontools
 
 COPY oauth/ /var/www/html/oauth
+COPY images/ /var/www/html/images
 
 CMD /entrypoint.sh
