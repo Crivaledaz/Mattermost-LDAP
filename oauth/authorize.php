@@ -118,6 +118,7 @@ if ($is_authorized)
   // This is only here so that you get to see your code in the cURL request. Otherwise, we'd redirect back to the client
   $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);
   header('Location: ' . $response->getHttpHeader('Location'));
+  session_destroy();
   exit();
 }
 
