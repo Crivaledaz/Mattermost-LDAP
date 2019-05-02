@@ -37,11 +37,11 @@ else
     	$password=$_POST['password'];
 
     	// Open a LDAP connection
-    	$ldap = new LDAP($hostname,$port,$ldap_version);
+    	$ldap = new LDAP($ldap_host,$ldap_port,$ldap_version);
 		
 		// Check user credential on LDAP
 		try{
-			$authenticated = $ldap->checkLogin($user,$password,$search_attribute,$filter,$base,$bind_dn,$bind_pass);
+			$authenticated = $ldap->checkLogin($user,$password,$ldap_search_attribute,$ldap_filter,$ldap_base_dn,$ldap_bind_dn,$ldap_bind_pass);
 		}
 		catch (Exception $e)
 		{

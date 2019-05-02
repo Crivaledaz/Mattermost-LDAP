@@ -45,7 +45,7 @@ if (empty($_POST)) {
 
 
 <center>
-  <table background="../images/login.png" border="0" width="729" height="343" cellspacing="1" cellpadding="4">
+  <table background="images/login.png" border="0" width="729" height="343" cellspacing="1" cellpadding="4">
     <tr>
       <td width="40%">&nbsp;</td>
       

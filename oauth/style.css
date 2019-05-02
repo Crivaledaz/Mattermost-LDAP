@@ -1,0 +1,57 @@
+html
+{
+    height: 100%;
+    margin: 0;
+}
+
+body {
+  font-family:"Tahoma","Arial", serif;
+  font-size:8px;
+  font-weight: normal;
+  color: black;
+  text-decoration:none;
+  background-color: white;
+    height: 100%;
+    margin: 0;  
+}
+
+
+.LoginTitle { 
+  color: #000000;
+  font-family : "Tahoma","Arial", serif;
+  font-size : 18pt;
+  font-weight: normal;
+}
+
+.LoginUsername { 
+  color: #000000;
+  font-family : "Tahoma","Arial", serif;
+  font-size : 14pt;
+  font-weight: normal;
+}
+
+.LoginComment { 
+  color: #000000;
+  font-family : "Tahoma","Arial", serif;
+  font-size : 8pt;
+  font-weight: normal;
+}
+
+.GreenButton
+{
+  color: white;
+  font-family : "Tahoma", "Arial", serif;
+  font-size : 10pt;
+  font-weight: normal;
+  height: 28px;
+    background: transparent url(images/ButtonGreen.png) repeat-x left top;
+    border: solid 1px #50B4AE;
+    font-weight: bold;
+}
+
+.messageLogin {
+     color: Yellow;
+     font-family : "Tahoma", "Arial", serif;
+     font-size : 8pt;
+     font-weight: bold; 
+}

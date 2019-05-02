@@ -11,7 +11,7 @@ require_once('OAuth2/Autoloader.php');
 OAuth2\Autoloader::register();
 
 //$dsn is the Data Source Name for your database, for exmaple "mysql:dbname=my_oauth2_db;host=localhost"
-$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
+$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $db_user, 'password' => $db_pass));
 
 // Pass a storage object or array of storage objects to the OAuth2 server class
 $server = new OAuth2\Server($storage);

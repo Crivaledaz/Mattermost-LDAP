@@ -1,12 +1,12 @@
 <?php
 
-$port  	  = 5432;
-$host  	  = "localhost";
-$name  	  = "oauth_db";
-$type	  = "pgsql";
-$username = "oauth";
-$password = "oauth_secure-pass";
-$dsn	  = $type . ":dbname=" . $name . ";host=" . $host . ";port=" . $port; 
+$db_port  	  = 5432;
+$db_host  	  = "localhost";
+$db_name  	  = "oauth_db";
+$db_type	  = "pgsql";
+$db_user      = "oauth";
+$db_pass      = "oauth_secure-pass";
+$dsn	      = $db_type . ":dbname=" . $db_name . ";host=" . $db_host . ";port=" . $db_port; 
 
 /* Uncomment the line below to set date.timezone to avoid E.Notice raise by strtotime() (in Pdo.php)
  * If date.timezone is not defined in php.ini or with this function, Mattermost could return a bad token request error
