@@ -1,5 +1,4 @@
 :root {
-    --form_bg: #ffffff;
     --input_bg: #E5E5E5;
     --input_hover:#eaeaea;
     --accept_bg: #1FCC44;
@@ -14,15 +13,12 @@ html {
     margin: 0;
 }
 
-
 /* Overide browser defaults */
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-
-
 
 /* Style the form wrapper */
 body {
@@ -41,14 +37,9 @@ table {
     margin-top: 5%;
 }
 
-
-
-
-
-/* Display the image centered on the left */
+/* Format the different images*/
 #form_icon, 
 #form_icon_prompt {
-    /* Center the image */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,8 +67,6 @@ table {
 	transform: translate(-50%, 25%);
 }
 
-
-
 /* Style input fields */
 .input_container {
     background-color: var(--input_bg);
@@ -102,7 +91,6 @@ table {
     border-radius: 12px;
     width: 100%;
 }
-
 
 .input_field {
     /* Customize the input tag with lighter font and some padding*/
@@ -159,6 +147,13 @@ table {
     background-color: var(--deny_hover);
 }
 
+/* Format the error messages */
+.err_msg {
+	color: red;
+	font-weight: bold;
+	font-size: 110%;
+}
+
 
 /* General page styling */
 h1,
@@ -174,9 +169,6 @@ span {
 i {
     color: var(--icon_color);
 }
-
-
-
 
 /* Make it responsive */
 @media screen and (max-width:768px) {
