@@ -111,7 +111,7 @@ if (empty($_POST)) {
 
 // print the authorization code if the user has authorized your client
 $is_authorized = ($_POST['authorized'] === 'Authorize');
-$server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['uid']);
+$server->handleAuthorizeRequest($request, $response, $is_authorized,strtolower($_SESSION['uid']));
 
 if ($is_authorized) 
 {
