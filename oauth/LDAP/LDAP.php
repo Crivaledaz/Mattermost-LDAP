@@ -225,6 +225,8 @@ class LDAP implements LDAPInterface
         	throw new Exception('An error has occured during ldap_first_entry execution. Please check parameter of LDAP/getData.');
         }
 
+	error_log("LDAP \$data = " . json_encode($data));
+
         $mail = ldap_get_values($this->ldap_server, $data, "mail");
         if (!$mail)
         {
