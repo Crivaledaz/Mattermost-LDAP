@@ -34,8 +34,17 @@ try
 {
 	$data = $ldap->getDataForMattermost($ldap_base_dn,$ldap_filter,$ldap_bind_dn,$ldap_bind_pass,$ldap_search_attribute,$user);
 
-	// Here is the patch for Mattermost 4.4 and older. Gitlab has changed the JSON output of oauth service. Many data are not used by Mattermost, but there is a stack error if we delete them. That's the reason why date and many parameters are null or empty.
-	error_log("resource.php \$data = " . json_encode($data);
+	/* Here is the patch for Mattermost 4.4 and older. Gitlab has changed
+	 the JSON output of oauth service. Many data are not used by
+	 Mattermost, but there is a stack error if we delete them. That's the
+	 reason why date and many parameters are null or empty.
+	*/
+	if ($data) {
+	    error_log("resource.php \$data = " . json_encode($data));
+	} else {
+	    error_log("$data is null");
+        }
+
 	$resp = array(
 	    "id" => $assoc_id,
 	    "name" => $data['cn'],
@@ -70,6 +79,7 @@ try
 	    "external" => false,
 	    "shared_runners_minutes_limit" => null
 	);
+	error_log("\$resp = " . json_encode($resp));
 
 	// Below is the old version, still consistent with Mattermost before version 4.4
 	// $resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
