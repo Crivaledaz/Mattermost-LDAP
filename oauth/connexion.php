@@ -20,7 +20,7 @@ else
 	// Check received data length (to prevent code injection) 
 	if (strlen($_POST['user']) > 15)
  	{
-  		echo 'Usernameis longer than 15 characters ... Please try again<br /><br />';
+  		echo 'Username is longer than 15 characters ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     }
     elseif (strlen($_POST['password']) > 50)
