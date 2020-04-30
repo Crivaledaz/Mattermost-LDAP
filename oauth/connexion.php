@@ -33,7 +33,7 @@ else
    		// Remove every html tag and useless space on username (to prevent XSS)
    	   	$user=strip_tags(trim($_POST['user']));
 
-    	$user=$_POST['user'];
+    	$user=strtolower($_POST['user']);
     	$password=$_POST['password'];
 
     	// Open a LDAP connection
