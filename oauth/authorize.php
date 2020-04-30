@@ -13,25 +13,34 @@ require_once __DIR__.'/server.php';
 $request = OAuth2\Request::createFromGlobals();
 $response = new OAuth2\Response();
 
-// validate the authorize request
+// If user has clicked on "not me" link, disconnect him by cleaning PHP SESSION variables.
+if ($_POST['disconnect']) {
+    $_SESSION=array();
+}
+
+// Validate the authorize request
 if (!$server->validateAuthorizeRequest($request, $response)) {
     $response->send();
     die;
 }
 
-// if user is not yet authenticated, he is redirected.
+// If user is not yet authenticated, he is redirected.
 if (!isset($_SESSION['uid']))
 {
-  //store the authorize request
+  // Store the authorize request
   $explode_url=explode("/", strip_tags(trim($_SERVER['REQUEST_URI'])));
   $_SESSION['auth_page']=end($explode_url);
   header('Location: index.php');
   exit();
 }
 
-
-// display an authorization form
-if (empty($_POST)) {
+// Check if user has already authorized oauth to share data with Mattermost. In this case, user should exist in 'user' table.
+if ($server->userExists($_SESSION['uid'])) {
+    // User had already authorized the client during a previous session.
+    $is_authorized = true;
+}
+// Display an authorization form
+else if (empty($_POST)) {
   exit('
 <!DOCTYPE html>
 <html>
@@ -59,8 +68,12 @@ if (empty($_POST)) {
                         <td>
                             &nbsp; <strong>Full Name</strong><br/>
                             &nbsp; <strong>E-mail</strong><br/>
-                            &nbsp; For the user <strong>' . $_SESSION['uid'] . '</strong><br/>
                         </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Login as : <strong>' . $_SESSION['uid'] . ' </strong> <button type="submit" class="link" name="disconnect" value="true" ><span>(not me ?)</span></button>
+                      </td>
                     </tr>
                 </table>
                 <br>
@@ -75,10 +88,13 @@ if (empty($_POST)) {
 </html>
   ');
 }
+else {
+    // Check if user has authorized to share his data with the client
+    $is_authorized = ($_POST['authorized'] === 'Authorize');
+}
 
-// print the authorization code if the user has authorized your client
-$is_authorized = ($_POST['authorized'] === 'Authorize');
-$server->handleAuthorizeRequest($request, $response, $is_authorized,strtolower($_SESSION['uid']));
+// Print the authorization code if the user has authorized your client
+$server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['uid']);
 
 if ($is_authorized)
 {

@@ -38,7 +38,7 @@ table {
 }
 
 /* Format the different images*/
-#form_icon, 
+#form_icon,
 #form_icon_prompt {
     display: flex;
     justify-content: center;
@@ -48,12 +48,12 @@ table {
 
 #form_icon img {
     width: 100%;
-	max-width: 450px;
+    max-width: 450px;
 }
 
 #form_icon_prompt img {
     width: 50%;
-	max-width: 350px;
+    max-width: 350px;
 }
 
 
@@ -63,14 +63,13 @@ table {
     display: inline-block;
     justify-content: center;
     align-items: center;
-	position: absolute;
-	transform: translate(-50%, 25%);
+    position: absolute;
+    transform: translate(-50%, 25%);
 }
 
 /* Style input fields */
 .input_container {
     background-color: var(--input_bg);
-    
     /* Vertically align icon and text inside the div*/
     display: flex;
     align-items: center;
@@ -82,8 +81,8 @@ table {
 }
 
 .input_container,
-#input_accept, 
-#input_deny, 
+#input_accept,
+#input_deny,
 #input_login {
     height: 60px;
 
@@ -109,8 +108,8 @@ table {
     outline: none;
 }
 
-#input_accept, 
-#input_deny, 
+#input_accept,
+#input_deny,
 #input_login {
     /* Submit button has a different color and different padding */
     background-color: var(--accept_bg);
@@ -125,15 +124,15 @@ table {
     width: 50%;
 }
 
-#input_accept:hover, 
-#input_deny:hover, 
+#input_accept:hover,
+#input_deny:hover,
 #input_login:hover {
     /* Simple color transition on hover */
     transition: background-color, 500ms;
     cursor: pointer;
 }
 
-#input_accept, 
+#input_accept,
 #input_deny {
     width: 45%;
     margin-top: 6%;
@@ -149,9 +148,9 @@ table {
 
 /* Format the error messages */
 .err_msg {
-	color: red;
-	font-weight: bold;
-	font-size: 110%;
+    color: red;
+    font-weight: bold;
+    font-size: 110%;
 }
 
 
@@ -160,7 +159,7 @@ h1,
 span {
     text-align: center;
     padding-bottom: 2%;
-	padding-top: 0%;
+    padding-top: 0%;
     font-weight: bolder;
     font-size: 300%;
 }
@@ -184,4 +183,31 @@ i {
     #form_icon {
         display: flex;
     }
+}
+
+button {
+    overflow: visible;
+    width: auto;
+}
+button.link {
+    font-family: "Verdana" sans-serif;
+    font-size: 7pt;
+    text-align: left;
+    color: blue;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+
+    -moz-user-select: text;
+
+    /* override all your button styles here if there are any others */
+}
+button.link span {
+    text-decoration: underline;
+}
+button.link:hover span,
+button.link:focus span {
+    color: black;
 }

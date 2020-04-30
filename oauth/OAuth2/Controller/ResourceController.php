@@ -10,17 +10,43 @@ use OAuth2\ResponseInterface;
 use OAuth2\Scope;
 
 /**
- * @see OAuth2\Controller\ResourceControllerInterface
+ * @see ResourceControllerInterface
  */
 class ResourceController implements ResourceControllerInterface
 {
+    /**
+     * @var array
+     */
     private $token;
 
+    /**
+     * @var TokenTypeInterface
+     */
     protected $tokenType;
+
+    /**
+     * @var AccessTokenInterface
+     */
     protected $tokenStorage;
+
+    /**
+     * @var array
+     */
     protected $config;
+
+    /**
+     * @var ScopeInterface
+     */
     protected $scopeUtil;
 
+    /**
+     * Constructor
+     *
+     * @param TokenTypeInterface   $tokenType
+     * @param AccessTokenInterface $tokenStorage
+     * @param array                $config
+     * @param ScopeInterface       $scopeUtil
+     */
     public function __construct(TokenTypeInterface $tokenType, AccessTokenInterface $tokenStorage, $config = array(), ScopeInterface $scopeUtil = null)
     {
         $this->tokenType = $tokenType;
@@ -36,6 +62,14 @@ class ResourceController implements ResourceControllerInterface
         $this->scopeUtil = $scopeUtil;
     }
 
+    /**
+     * Verify the resource request
+     *
+     * @param RequestInterface  $request
+     * @param ResponseInterface $response
+     * @param null              $scope
+     * @return bool
+     */
     public function verifyResourceRequest(RequestInterface $request, ResponseInterface $response, $scope = null)
     {
         $token = $this->getAccessTokenData($request, $response);
@@ -71,6 +105,13 @@ class ResourceController implements ResourceControllerInterface
         return (bool) $token;
     }
 
+    /**
+     * Get access token data.
+     *
+     * @param RequestInterface  $request
+     * @param ResponseInterface $response
+     * @return array|null
+     */
     public function getAccessTokenData(RequestInterface $request, ResponseInterface $response)
     {
         // Get the token parameter
@@ -85,6 +126,7 @@ class ResourceController implements ResourceControllerInterface
             } elseif (time() > $token["expires"]) {
                 $response->setError(401, 'invalid_token', 'The access token provided has expired');
             } else {
+                // Get associated id for user.
                 $token["assoc_id"]=$this->tokenStorage->getUsersID($token["user_id"]);
                 return $token;
             }
@@ -104,7 +146,11 @@ class ResourceController implements ResourceControllerInterface
         return null;
     }
 
-    // convenience method to allow retrieval of the token
+    /**
+     * convenience method to allow retrieval of the token.
+     *
+     * @return array
+     */
     public function getToken()
     {
         return $this->token;
