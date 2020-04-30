@@ -89,7 +89,7 @@ catch (Exception $e)
     if ($e->getCode() == 404) {
 	$resp = [
 	    "error" => "User not found",
-	    "message" => "<b>$user</b> is not in the group of authorized users."
+	    "message" => "$user is not in the group of authorized users."
 	];
     } else {
 	$resp = array(

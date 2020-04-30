@@ -50,8 +50,17 @@ else
 		}
 		catch (Exception $e)
 		{
+		    if ($e->getCode() == 404) {
+			$resp = json_encode(
+			    [
+				"error" => "User not found",
+				"message" => "$user is not in the group of authorized users."
+			    ]
+			);
+		    } else {
 			$resp = json_encode(array("error" => "Impossible to get data", "message" => $e->getMessage()));
-			$authenticated = false;
+		    }
+		    $authenticated = false;
 		}
 
 		// If user is authenticated
