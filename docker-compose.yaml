@@ -1,0 +1,47 @@
+version: '3'
+services:
+    mattermost-ldap:
+        build: Docker/mattermostldap
+        image: mattermostldap
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        environment:
+            - ldap_host
+            - ldap_port
+            - ldap_version
+            - ldap_search_attribute
+            - ldap_base_dn
+            - ldap_filter
+            - ldap_bind_dn
+            - ldap_bind_pass
+            - db_host
+            - db_port
+            - db_type
+            - db_name
+            - db_user
+            - db_pass
+
+    db:
+        image: postgres:alpine
+        restart: always
+        volumes:
+            - ./db_init/init_postgres.sh:/docker-entrypoint-initdb.d/init_postgres.sh
+            - ./db_init/config_init.sh.example:/docker-entrypoint-initdb.d/config_init.sh
+            - ./data/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
+            - POSTGRES_HOST_AUTH_METHOD
+            - client_id
+            - client_secret
+            - redirect_uri
+            - grant_types
+            - scope
+            - user_id
+            - db_user
+            - db_pass
+            - db_name
+            - db_host
+            - db_port

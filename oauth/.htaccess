@@ -5,3 +5,13 @@ deny from all
 <Files *.php>
     allow from all
 </Files>
+
+# Only allow access to CSS files
+<Files *.css>
+    allow from all
+</Files>
+
+# Only allow access to image
+<Files *.png>
+    allow from all
+</Files>
