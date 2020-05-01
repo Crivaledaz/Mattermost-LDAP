@@ -70,13 +70,11 @@ else if (empty($_POST)) {
                             &nbsp; <strong>E-mail</strong><br/>
                         </td>
                     </tr>
-                    <tr>
-                      <td>
-                        Login as : <strong>' . $_SESSION['uid'] . ' </strong> <button type="submit" class="link" name="disconnect" value="true" ><span>(not me ?)</span></button>
-                      </td>
-                    </tr>
                 </table>
-                <br>
+                <br/>
+                Logged as : <strong>' . $_SESSION['uid'] . ' </strong> <button type="submit" class="link" name="disconnect" value="true" ><span>(not me ?)</span></button>
+                <br/>
+                <br/>
 
                 <form method="POST">
                     <input type="submit" value="Authorize" name="authorized" id="input_accept" class="input_field">
@@ -95,6 +93,9 @@ else {
 
 // Print the authorization code if the user has authorized your client
 $server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['uid']);
+
+// Authentication process is terminated, session can be destroyed.
+$_SESSION=array();
 
 if ($is_authorized)
 {
