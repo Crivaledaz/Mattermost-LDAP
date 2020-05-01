@@ -1,0 +1,65 @@
+version: '3'
+services:
+    nginx:
+        image: nginx
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ../oauth:/var/www/html/oauth
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        links:
+            - "php:php"
+
+    php:
+        build: ../Docker/php-ldap-pgsql
+        image: php-ldap-pgsql
+        volumes:
+            - ../oauth:/var/www/html/oauth
+        environment:
+            ldap_host: ldap://ldap.company.com:389/
+            ldap_port: 389
+            ldap_version: 3
+            ldap_search_attribute: uid
+            ldap_base_dn: "ou=People,o=Company"
+            ldap_filter: "(objectClass=*)"
+            ldap_bind_dn: ""
+            ldap_bind_pass: ""
+            db_host: "127.0.0.1"
+            db_port: "5432"
+            db_type: "pgsql"
+            db_name: "oauth_db"
+            db_user: "oauth"
+            db_pass: "oauth_secure-pass"
+
+    db:
+        image: postgres:alpine
+        restart: always
+        volumes:
+            - ../db_init/init_postgres.sh:/docker-entrypoint-initdb.d/init_postgres.sh
+            - ../db_init/config_init.sh.example:/docker-entrypoint-initdb.d/config_init.sh
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: rootroot
+            POSTGRES_HOST_AUTH_METHOD: trust
+            client_id: 123456789abcdef123456789abcdef
+            client_secret: fedcba987654321fedcba987654321
+            redirect_uri: "http://localhost/signup/gitlab/complete"
+            grant_types: "authorization_code"
+            scope: "api"
+            user_id: ""
+            db_user: "oauth"
+            db_pass: "oauth_secure-pass"
+            db_name: "oauth_db"
+            db_host: "127.0.0.1"
+            db_port: "5432"
+
+    mattermost:
+        image: mattermost/mattermost-preview
+        ports:
+            - 8065:8065
+        extra_hosts:
+            - dockerhost:127.0.0.1
+        volumes:
+            - ./config.json:/mm/mattermost/config/config_docker.json

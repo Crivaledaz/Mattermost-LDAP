@@ -1,6 +1,10 @@
 #!/bin/bash
-#This script need right to become postgres user (so root) and to read/write in httpd directory
+#This script need right to become mysql user (so root) and to read/write in httpd directory
 
+source config_init.sh
+
+#If script does not work, fill the following variable with the mysql account password
+mysql_pass=""
 #######################################--Fonctions--###############################################
 
 ok() { echo -e '\e[32m'$1'\e[m'; }
@@ -25,32 +29,32 @@ create_client="INSERT INTO oauth_clients (client_id,client_secret,redirect_uri,g
 
 #Welcome Message
 info "This script will create a new Oauth role and an associated database for Mattermost-LDAP\nTo edit configuration please edit this script before running !\n"
-warn "SuperUser right must be ask to create the new role and database in postgres\n"
+warn "SuperUser right must be ask to create the new role and database in mysql\n"
 info "Press ctrl+c to stop the script"
-
 sleep 5
 
-#Creating Oauth role and associated database (need admin account on postgres)
-info "Creation of role $oauth_user and database $oauth_db ... (need to be root)"
-psql -U postgres -c "CREATE DATABASE $oauth_db_name;"
-psql -U postgres -c "CREATE USER $oauth_user WITH ENCRYPTED PASSWORD '$oauth_pass';"
-psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE $oauth_db_name TO $oauth_user;"
+
+#Creating Oauth role and associated database (need admin account on mysql)
+info "Creation of role $db_user and database $db_name ... (need to be root)"
+sudo mysql -u root --password=$mysql_pass --execute "CREATE DATABASE $db_name_name;"
+sudo mysql -u root --password=$mysql_pass --execute "CREATE USER $db_user@'%' IDENTIFIED BY '$db_pass';"
+sudo mysql -u root --password=$mysql_pass --execute "GRANT ALL PRIVILEGES ON $db_name_name.* TO $db_user@'%';"
 
 #Creating tables for ouath database (use oauth role)
-info "Creation of tables for database $oauth_db (using $oauth_user)"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_oauth_client"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_oauth_access_tokens"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_oauth_authorization_codes"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_oauth_refresh_tokens"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_users"
-psql -U $oauth_user -d $oauth_db_name -c "$create_table_oauth_scopes"
+info "Creation of tables for database $db_name (using $db_user)"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_client"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_access_tokens"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_authorization_codes"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_refresh_tokens"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_users"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_scopes"
 
 #Insert new client in the database
 info "Insert new client in the database"
-psql -U $oauth_user -d $oauth_db_name -c "$create_client"
+mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_client"
 
 #Verification
-psql -U $oauth_user -d $oauth_db_name -c "SELECT * from oauth_clients WHERE client_id='$client_id';" | grep '(1'
+mysql -u $db_user --password=$db_pass $db_name_name --execute "SELECT * from oauth_clients WHERE client_id='$client_id';" | grep '(1'
 
 if [ $? ]
 then ok "Client has been created ! Oauth Database is configured.\n"
