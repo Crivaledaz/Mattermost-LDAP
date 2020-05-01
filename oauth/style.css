@@ -1,57 +1,187 @@
-html
-{
+:root {
+    --input_bg: #E5E5E5;
+    --input_hover:#eaeaea;
+    --accept_bg: #1FCC44;
+    --accept_hover: #40e263;
+    --deny_bg: #cc1f1f;
+    --deny_hover: #e24040;
+    --icon_color:#6b6b6b;
+}
+
+html {
     height: 100%;
     margin: 0;
 }
 
+/* Overide browser defaults */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Style the form wrapper */
 body {
-  font-family:"Tahoma","Arial", serif;
-  font-size:8px;
-  font-weight: normal;
-  color: black;
-  text-decoration:none;
-  background-color: white;
-    height: 100%;
-    margin: 0;  
+    /* Set custom font */
+    font-family: 'Roboto', sans-serif;
+    margin: auto;
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: larger;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 5%;
+}
+
+/* Format the different images*/
+#form_icon, 
+#form_icon_prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+
+#form_icon img {
+    width: 100%;
+	max-width: 450px;
+}
+
+#form_icon_prompt img {
+    width: 50%;
+	max-width: 350px;
 }
 
 
-.LoginTitle { 
-  color: #000000;
-  font-family : "Tahoma","Arial", serif;
-  font-size : 18pt;
-  font-weight: normal;
+/* Style the form_credentials */
+#form_credentials {
+    /* Center the content */
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	transform: translate(-50%, 25%);
 }
 
-.LoginUsername { 
-  color: #000000;
-  font-family : "Tahoma","Arial", serif;
-  font-size : 14pt;
-  font-weight: normal;
+/* Style input fields */
+.input_container {
+    background-color: var(--input_bg);
+    
+    /* Vertically align icon and text inside the div*/
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
 }
 
-.LoginComment { 
-  color: #000000;
-  font-family : "Tahoma","Arial", serif;
-  font-size : 8pt;
-  font-weight: normal;
+.input_container:hover {
+    background-color: var(--input_hover);
 }
 
-.GreenButton
-{
-  color: white;
-  font-family : "Tahoma", "Arial", serif;
-  font-size : 10pt;
-  font-weight: normal;
-  height: 28px;
-    background: transparent url(images/ButtonGreen.png) repeat-x left top;
-    border: solid 1px #50B4AE;
+.input_container,
+#input_accept, 
+#input_deny, 
+#input_login {
+    height: 60px;
+
+    /* Make the borders more round */
+    border-radius: 12px;
+    width: 100%;
+}
+
+.input_field {
+    /* Customize the input tag with lighter font and some padding*/
+    color: var(--icon_color);
+    background-color: inherit;
+    width: 95%;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 400;
+    padding-left: 6.5%;
+}
+
+.input_field:hover,
+.input_field:focus {
+    /* Remove the outline */
+    outline: none;
+}
+
+#input_accept, 
+#input_deny, 
+#input_login {
+    /* Submit button has a different color and different padding */
+    background-color: var(--accept_bg);
+    padding-left: 0;
     font-weight: bold;
+    color: white;
+    text-transform: capitalize;
+    text-align: center;
+    display: inline-block;
+    margin-top: 25%;
+    margin-right: 2%;
+    width: 50%;
 }
 
-.messageLogin {
-     color: Yellow;
-     font-family : "Tahoma", "Arial", serif;
-     font-size : 8pt;
-     font-weight: bold; 
+#input_accept:hover, 
+#input_deny:hover, 
+#input_login:hover {
+    /* Simple color transition on hover */
+    transition: background-color, 500ms;
+    cursor: pointer;
+}
+
+#input_accept, 
+#input_deny {
+    width: 45%;
+    margin-top: 6%;
+}
+
+#input_deny {
+    background-color: var(--deny_bg);
+}
+
+#input_deny:hover {
+    background-color: var(--deny_hover);
+}
+
+/* Format the error messages */
+.err_msg {
+	color: red;
+	font-weight: bold;
+	font-size: 110%;
+}
+
+
+/* General page styling */
+h1,
+span {
+    text-align: center;
+    padding-bottom: 2%;
+	padding-top: 0%;
+    font-weight: bolder;
+    font-size: 300%;
+}
+
+
+i {
+    color: var(--icon_color);
+}
+
+/* Make it responsive */
+@media screen and (max-width:768px) {
+
+    /* Make the layout a single column and add some margin to the wrapper */
+    #form_wrapper {
+        grid-template-columns: 1fr;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    /* On small screens we don't display the image */
+    #form_icon {
+        display: flex;
+    }
 }
