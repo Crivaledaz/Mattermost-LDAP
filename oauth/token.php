@@ -11,9 +11,9 @@ require_once __DIR__.'/config.php';
 
 /*
 
-  The Mattermost server seems to be returning bare http urls, even
-  though there is no http url in the config.json.  If we are using
-  https we need to modify them.
+  The Mattermost server seems to be returning bare http urls, even if
+  there is no http url in the config.json.  If we are using https we
+  need to modify them.
 
 */
 $redirect_url_scheme = substr($_POST["redirect_uri"], 0, 5);
