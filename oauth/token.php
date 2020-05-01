@@ -9,7 +9,6 @@ require_once __DIR__.'/server.php';
 require_once __DIR__.'/config.php';
 
 
-error_log("token.php \$_POST = " . json_encode($_POST));
 /*
 
   The Mattermost server seems to be returning bare http urls, even
@@ -23,6 +22,11 @@ if ($url_scheme == "https" && $redirect_url_scheme == "http:") {
     $_POST["redirect_uri"] = "https" . substr($_POST["redirect_uri"], 4);
 }
 
-// Handle a request for an OAuth2.0 Access Token and send the response to the client
+/*
+
+ Handle a request for an OAuth2.0 Access Token and send the response
+ to the client
+
+*/
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 ?>

@@ -20,18 +20,13 @@ else
 	// Check received data length (to prevent code injection) 
 	if (strlen($_POST['user']) > 15)
  	{
-  		echo 'Username is longer than 15 characters ... Please try again<br /><br />';
+  		echo 'Username has incorrect format ... Please try again<br /><br />';
 		echo 'Click <a href="./index.php">here</a> to come back to login page';
     }
-    elseif (strlen($_POST['password']) > 50)
+    elseif (strlen($_POST['password']) > 50 || strlen($_POST['password']) <= 7)
     {
-	echo 'Password is longer than 50 characters ... Please try again<br /><br />';
-	echo 'Click <a href="./index.php">here</a> to come back to login page';
-
-    } elseif (strlen($_POST['password']) <= 7)
-    {
-    	echo 'Password is shorter than 7 characters ... Please try again<br /><br />';
-	echo 'Click <a href="./index.php">here</a> to come back to login page';
+    	echo 'Password has incorrect format ... Please try again<br /><br />';
+		echo 'Click <a href="./index.php">here</a> to come back to login page';
     } 
     else
    	{
