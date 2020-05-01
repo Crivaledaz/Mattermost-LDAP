@@ -59,12 +59,12 @@ interface AuthorizationCodeInterface
      *
      * Required for OAuth2::GRANT_TYPE_AUTH_CODE.
      *
-     * @param string $code         Authorization code to be stored.
-     * @param mixed  $client_id    Client identifier to be stored.
-     * @param mixed  $user_id      User identifier to be stored.
-     * @param string $redirect_uri Redirect URI(s) to be stored in a space-separated string.
-     * @param int    $expires      Expiration to be stored as a Unix timestamp.
-     * @param string $scope        OPTIONAL Scopes to be stored in space-separated string.
+     * @param string $code         - Authorization code to be stored.
+     * @param mixed  $client_id    - Client identifier to be stored.
+     * @param mixed  $user_id      - User identifier to be stored.
+     * @param string $redirect_uri - Redirect URI(s) to be stored in a space-separated string.
+     * @param int    $expires      - Expiration to be stored as a Unix timestamp.
+     * @param string $scope        - OPTIONAL Scopes to be stored in space-separated string.
      *
      * @ingroup oauth2_section_4
      */
@@ -86,33 +86,32 @@ interface AuthorizationCodeInterface
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 /**
- * @author Denis CLAVIER <clavierd at gmail dot com>
- */
+* @author Denis CLAVIER <clavierd at gmail dot com>
+*/
 
-    /**
-     * get user id on Oauth2 server
-     *
-     * @param string $username
-     * Username of an LDAP user (often uid)  
-     *
-     * @return 
-     * The id associated to username in users table
-     * and FALSE if username is not in the users table  
-     */
-    public function getUsersID($username);
+   /**
+    * Get user id on Oauth2 server
+    *
+    * @param string $username
+    * Username of an LDAP user (often uid)
+    *
+    * @return int|bool
+    * The id associated to username in users table
+    * and FALSE if username is not in the users table
+    */
+   public function getUsersID($username);
 
-    /**
-     * set an id for username on Oauth2 server
-     *
-     * @param string $username
-     * Username of an LDAP user (often uid)  
-     *
-     * @return 
-     * TRUE if insertion has succeed
-     * and FALSE if is not
-     * 
-     * An unique ID is linked to the username after this function
-     */
-    public function setUsersID($username);
-
+   /**
+    * Set an id for username on Oauth2 server
+    *
+    * @param string $username
+    * Username of an LDAP user (often uid)
+    *
+    * @return bool
+    * TRUE if insertion has succeed
+    * and FALSE if is not
+    *
+    * An unique ID is linked to the username after this function
+    */
+   public function setUsersID($username);
 }

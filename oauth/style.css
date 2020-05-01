@@ -12,25 +12,25 @@ body {
   text-decoration:none;
   background-color: white;
     height: 100%;
-    margin: 0;  
+    margin: 0;
 }
 
 
-.LoginTitle { 
+.LoginTitle {
   color: #000000;
   font-family : "Tahoma","Arial", serif;
   font-size : 18pt;
   font-weight: normal;
 }
 
-.LoginUsername { 
+.LoginUsername {
   color: #000000;
   font-family : "Tahoma","Arial", serif;
   font-size : 14pt;
   font-weight: normal;
 }
 
-.LoginComment { 
+.LoginComment {
   color: #000000;
   font-family : "Tahoma","Arial", serif;
   font-size : 8pt;
@@ -53,5 +53,32 @@ body {
      color: Yellow;
      font-family : "Tahoma", "Arial", serif;
      font-size : 8pt;
-     font-weight: bold; 
+     font-weight: bold;
+}
+
+button {
+    overflow: visible;
+    width: auto;
+}
+button.link {
+    font-family: "Verdana" sans-serif;
+    font-size: 7pt;
+    text-align: left;
+    color: blue;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+
+    -moz-user-select: text;
+
+    /* override all your button styles here if there are any others */
+}
+button.link span {
+    text-decoration: underline;
+}
+button.link:hover span,
+button.link:focus span {
+    color: black;
 }
