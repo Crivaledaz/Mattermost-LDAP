@@ -86,15 +86,6 @@ else if (empty($_POST)) {
 </html>
   ');
 }
-else {
-    // Check if user has authorized to share his data with the client
-    $is_authorized = ($_POST['authorized'] === 'Authorize');
-}
-else {
-    // Print the authorization code if the user has authorized your client
-    $is_authorized = ($_POST['authorized'] === 'Authorize');
-    $server->handleAuthorizeRequest($request, $response, $is_authorized, $_SESSION['uid']);
-}
 
 // Print the authorization code if the user has authorized your client
 $server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['uid']);
