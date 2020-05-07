@@ -9,4 +9,5 @@ RUN set -x \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install ldap
 
+# Enable development php.ini config (Solve empty answer from token.php)
 RUN ln -s /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini

@@ -36,92 +36,71 @@ if (!isset($_SESSION['uid']))
 
 // Check if user has already authorized oauth to share data with Mattermost. In this case, user should exist in 'user' table.
 if ($server->userExists($_SESSION['uid'])) {
-    // Bypass authorize form, continue Oauth process.
-    $server->handleAuthorizeRequest($request, $response, true, $_SESSION['uid']);
+    // User had already authorized the client during a previous session.
+    $is_authorized = true;
 }
 // Display an authorization form
 else if (empty($_POST)) {
   exit('
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-      <link rel="stylesheet" type="text/css" href="./style.css">
-    <title>Authorisation Mattermost</title>
-  </head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <title>Mattermost - LDAP Authorization</title>
 
-  <body>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
 
+    </head>
 
-<center>
-  <table background="images/login.png" border="0" width="729" height="343" cellspacing="1" cellpadding="4">
-    <tr>
-      <td width="40%">&nbsp;</td>
-
-      <td width="60%">
-        <table border="0" width="100%">
-
-          <tr>
-            <td align="center">
-              <div class="LoginTitle">Mattermost desires access to your LDAP data:</div>
-
-
-            <form method="post">
-
-                <table border="0" width="90%" cellpadding="1">
+    <body>
+        <div id="form-wrapper" style="text-align: center;">
+            <div id="form_credentials">
+                <h1>LDAP Authentication</h1>
+                <div id="form_icon">
+                <img src="./images/auth_icon.png" alt="authentication icon" >
+                </div>
+                <br>
+                <h2>Authorize Mattermost to get the following data:</h2>
+                <table>
                     <tr>
-                      <td colspan="2" align="left">
-
-                          <div class="messageLogin" align="center">
-
-                          </div>
-                        &nbsp;
-                      </td>
+                        <td>
+                            &nbsp; <strong>Full Name</strong><br/>
+                            &nbsp; <strong>E-mail</strong><br/>
+                        </td>
                     </tr>
-                    <tr>
-                      <td align="center" width="100%" class="LoginUsername">
-                        Login as : <b>' . $_SESSION['uid'] . ' </b> <button type="submit" class="link" name="disconnect" value="true" ><span>(not me ?)</span></button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="left" width="100%" class="LoginUsername">
-
-                        <br/>
-                        Requested Data : <br/>
-                        &nbsp; -> Username,<br/>
-                        &nbsp; -> Full Name,<br/>
-                        &nbsp; -> Email
-
-                      </td>
-                    </tr>
-                    <tr><td colspan="2">&nbsp;</td></tr>
-                    <tr>
-                      <td colspan="2" align="center"> <input type="submit" class="GreenButton" name="authorized" value="Authorize" >
-                      <input type="submit" class="GreenButton" name="authorized" value="Deny" > </td>
-
-                    </tr>
-
-
                 </table>
-              </form>
+                <br/>
+                Logged as : <strong>' . $_SESSION['uid'] . ' </strong> <button type="submit" class="link" name="disconnect" value="true" ><span>(not me ?)</span></button>
+                <br/>
+                <br/>
 
-          </td>
-          </tr>
-        </table>
-
-      </td>
-    </tr>
-  </table>
-</center>
-  </body>
+                <form method="POST">
+                    <input type="submit" value="Authorize" name="authorized" id="input_accept" class="input_field">
+                    <input type="submit" value="Deny" name="authorized" id="input_deny" class="input_field">
+                </form>
+            </div>
+        </div>
+    </body>
 </html>
-');
+  ');
+}
+else {
+    // Check if user has authorized to share his data with the client
+    $is_authorized = ($_POST['authorized'] === 'Authorize');
 }
 else {
     // Print the authorization code if the user has authorized your client
     $is_authorized = ($_POST['authorized'] === 'Authorize');
     $server->handleAuthorizeRequest($request, $response, $is_authorized, $_SESSION['uid']);
 }
+
+// Print the authorization code if the user has authorized your client
+$server->handleAuthorizeRequest($request, $response, $is_authorized,$_SESSION['uid']);
+
+// Authentication process is terminated, session can be destroyed.
+$_SESSION=array();
 
 if ($is_authorized)
 {
