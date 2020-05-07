@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <title>LDAP Connection Interface</title>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+                               integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+
+    </head>
+
+    <body>
+        <div id="form-wrapper" style="text-align: center;">
+            <div id="form_credentials">
+                <h1>LDAP Authentication</h1>
+                <div id="form_icon_prompt">
+                    <img src="./images/prompt_icon.png" alt="authentication icon" >
+                </div>
+                    <br>
+
+                    <form method="POST">
+                        <div class="input_container">
+                            <i class="fas fa-user"></i>
+                            <input placeholder="Username" type="text" name="user" id="field_username" class="input_field">
+                        </div><br>
+
+                        <div class="input_container">
+                            <i class="fas fa-lock"></i>
+                            <input placeholder="Password" type="password" name="password" id="field_password" class="input_field">
+                        </div><br>
+
+                        <div class="err_msg">
+                        </div>
+
+                        <input type="submit" value="Login" name="login" id="input_login" class="input_field">
+                    </form>
+            </div>
+        </div>
+    </body>
+</html>
