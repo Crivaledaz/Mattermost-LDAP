@@ -15,3 +15,8 @@ deny from all
 <Files *.png>
     allow from all
 </Files>
+
+# Only allow access to html files
+<Files *.html>
+    allow from all
+</Files>
