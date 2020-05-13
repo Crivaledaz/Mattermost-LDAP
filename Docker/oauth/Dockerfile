@@ -4,10 +4,10 @@
 # > https://github.com/crivaledaz/Mattermost-LDAP
 
 # Start from a CentOS 7 image
-FROM centos:latest
+FROM centos:centos7
 
 # Update packages and install dependencies
-RUN yum update -y && yum -y install httpd php postgresql php-ldap php-pdo php-pgsql git
+RUN yum update -y && yum -y install httpd php postgresql php-ldap php-pdo php-pgsql php-xml git
 
 # Retrieve Mattermost-LDAP from git repository
 RUN git clone https://github.com/crivaledaz/Mattermost-LDAP.git Mattermost-LDAP/
