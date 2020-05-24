@@ -73,7 +73,17 @@ try {
     // Below is the old version, still consistent with Mattermost before version 4.4
     // $resp = array("name" => $data['cn'],"username" => $user,"id" => $assoc_id,"state" => "active","email" => $data['mail']);
 } catch (Exception $e) {
-    $resp = array("error" => "Impossible to get data", "message" => $e->getMessage());
+    if ($e->getCode() == 404) {
+	$resp = [
+	    "error" => "User not found",
+	    "message" => "$user is not in the group of authorized users."
+	];
+    } else {
+	$resp = array(
+	    "error" => "Impossible to get data",
+	    "message" => $e->getMessage()
+	);
+    }
 }
 
 // send data or error message in JSON format

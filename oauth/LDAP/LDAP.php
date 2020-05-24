@@ -115,8 +115,10 @@ class LDAP implements LDAPInterface
         }
 
         $data = ldap_first_entry($this->ldap_server, $result);
-        if (!$data) {
-            throw new Exception('An error has occured during ldap_first_entry execution. Please check parameter of LDAP/checkLogin.');
+
+        if (!$data)
+        {
+            throw new Exception('No result from LDAP server', 404);
         }
         $dn = ldap_get_dn($this->ldap_server, $data);
         if (!$dn) {
