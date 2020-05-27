@@ -173,7 +173,14 @@ vim config_init.sh
 ./init_postgres.sh
 ```
 
-This script will automatically create and add a new client in the Oauth server, returning a client id and a client secret. You need to keep these two token to configure Mattermost. Please be sure the client secret remained secret. The redirect url in the script must comply with the hostname of your Mattermost server, else Mattermost could not get data from the Oauth server.
+This script will automatically create and add a new client in the Oauth server, returning a client id and a client secret. You need to keep these two token to configure Mattermost. Please be sure the client secret remained secret.
+
+The redirect uri in the script must comply with the hostname of your
+Mattermost server, or else Mattermost will not be able to get data from
+the Oauth server. If you update your hostname, you will need to update
+this value.  Here is an example query:
+
+```UPDATE oauth_clients SET redirect_uri = 'https://example.com/signup/gitlab/complete' WHERE client_id = '1234567890';```
 
 ## Configuration
 
