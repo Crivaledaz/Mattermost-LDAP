@@ -1,0 +1,78 @@
+os: linux
+dist: trusty
+
+services: docker
+
+language: shell
+
+branches:
+  only:
+    - master
+    - develop
+
+before_install:
+  - env | sort
+  - export TAG=travis
+  - export VCS_REF=`git rev-parse --short HEAD`
+  - export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+  - export IMAGE_NAME=mattermostldap
+  - export home=$(pwd)
+  - export travis_dir="${home}"
+  - export BUILD_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-${TRAVIS_BRANCH}}
+  - export BUILD_URL=https://github.com/${TRAVIS_PULL_REQUEST_SLUG:-${TRAVIS_REPO_SLUG}}
+
+install:
+  - echo "Changing to travis directory ($travis_dir)"
+  - cd "$travis_dir"
+  # Test container build
+  - travis_retry docker-compose -f docker-compose.yml build
+
+before_script:
+  - docker images
+
+script:
+  - echo "Changing to travis test directory ($travis_dir)"
+  - cd "$travis_dir"
+  # Test container run
+  - travis_retry docker-compose -f docker-compose.yml up -d && sleep 60
+  - docker-compose -f docker-compose.yml ps
+  - docker-compose -f docker-compose.yml logs "db"
+  - docker-compose -f docker-compose.yml ps "db" | grep "Up" || exit 1
+  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up" || exit 1
+  - echo 'Wait until sites and apps database installed (1 minute)' && sleep 60
+  - docker-compose -f docker-compose.yml ps
+  - docker-compose -f docker-compose.yml logs "db"
+  - docker-compose -f docker-compose.yml ps "db" | grep "Up"
+  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up"
+  # Test container restart
+  - docker-compose -f docker-compose.yml down
+  - travis_retry docker-compose -f docker-compose.yml up -d && sleep 60
+  - docker-compose -f docker-compose.yml ps
+  - docker-compose -f docker-compose.yml logs "db"
+  - docker-compose -f docker-compose.yml ps "db" | grep "Up"
+  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up"
+
+after_script:
+  - echo "Changing to project directory ($home)"
+  - cd "$home"
+  # Publish coverage to Coveralls
+  - test ! -f "$home/.coverage" || coveralls -b "$home" -d "$home/.coverage"
+  # Publish coverage to Codacy
+  - test -z "$CODACY_PROJECT_TOKEN" || bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Python -r "./coverage.xml"
+  # Publish coverage to Codecov
+  - test -z "$CODECOV_TOKEN" || bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false
+
+jobs:
+  allow_failures:
+    #- env: VERSION=master DATABASE=mariadb
+    - env: VERSION=master DATABASE=postgres
+
+env: # Environments
+  #- VERSION=master DATABASE=mariadb
+  - VERSION=master DATABASE=postgres

@@ -1,12 +1,18 @@
 version: '3'
 services:
     mattermost-ldap:
-        build: Docker/mattermostldap
+        build:
+            context: Docker/mattermostldap
+            args:
+                - VERSION=${VERSION}
         image: mattermostldap
         restart: always
         ports:
             - 80:80
             - 443:443
+        #depends_on:
+        #    db:
+        #        condition: service_healthy
         environment:
             - ldap_host
             - ldap_port
@@ -26,6 +32,8 @@ services:
     db:
         image: postgres:alpine
         restart: always
+        #healthcheck:
+        #    test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
         volumes:
             - ./db_init/init_postgres.sh:/docker-entrypoint-initdb.d/init_postgres.sh
             - ./db_init/config_init.sh.example:/docker-entrypoint-initdb.d/config_init.sh
