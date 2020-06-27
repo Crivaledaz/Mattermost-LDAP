@@ -25,7 +25,7 @@ install:
   - echo "Changing to travis directory ($travis_dir)"
   - cd "$travis_dir"
   # Test container build
-  - travis_retry docker-compose -f docker-compose.yml build
+  - travis_retry docker-compose -f docker-compose.yaml build
 
 before_script:
   - docker images
@@ -34,26 +34,26 @@ script:
   - echo "Changing to travis test directory ($travis_dir)"
   - cd "$travis_dir"
   # Test container run
-  - travis_retry docker-compose -f docker-compose.yml up -d && sleep 60
-  - docker-compose -f docker-compose.yml ps
-  - docker-compose -f docker-compose.yml logs "db"
-  - docker-compose -f docker-compose.yml ps "db" | grep "Up" || exit 1
-  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
-  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up" || exit 1
+  - travis_retry docker-compose -f docker-compose.yaml up -d && sleep 60
+  - docker-compose -f docker-compose.yaml ps
+  - docker-compose -f docker-compose.yaml logs "db"
+  - docker-compose -f docker-compose.yaml ps "db" | grep "Up" || exit 1
+  - docker-compose -f docker-compose.yaml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yaml ps "mattermost-ldap" | grep "Up" || exit 1
   - echo 'Wait until sites and apps database installed (1 minute)' && sleep 60
-  - docker-compose -f docker-compose.yml ps
-  - docker-compose -f docker-compose.yml logs "db"
-  - docker-compose -f docker-compose.yml ps "db" | grep "Up"
-  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
-  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up"
+  - docker-compose -f docker-compose.yaml ps
+  - docker-compose -f docker-compose.yaml logs "db"
+  - docker-compose -f docker-compose.yaml ps "db" | grep "Up"
+  - docker-compose -f docker-compose.yaml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yaml ps "mattermost-ldap" | grep "Up"
   # Test container restart
-  - docker-compose -f docker-compose.yml down
-  - travis_retry docker-compose -f docker-compose.yml up -d && sleep 60
-  - docker-compose -f docker-compose.yml ps
-  - docker-compose -f docker-compose.yml logs "db"
-  - docker-compose -f docker-compose.yml ps "db" | grep "Up"
-  - docker-compose -f docker-compose.yml logs "mattermost-ldap"
-  - docker-compose -f docker-compose.yml ps "mattermost-ldap" | grep "Up"
+  - docker-compose -f docker-compose.yaml down
+  - travis_retry docker-compose -f docker-compose.yaml up -d && sleep 60
+  - docker-compose -f docker-compose.yaml ps
+  - docker-compose -f docker-compose.yaml logs "db"
+  - docker-compose -f docker-compose.yaml ps "db" | grep "Up"
+  - docker-compose -f docker-compose.yaml logs "mattermost-ldap"
+  - docker-compose -f docker-compose.yaml ps "mattermost-ldap" | grep "Up"
 
 after_script:
   - echo "Changing to project directory ($home)"
