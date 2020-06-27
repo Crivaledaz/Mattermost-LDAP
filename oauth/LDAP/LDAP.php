@@ -22,10 +22,12 @@ class LDAP implements LDAPInterface
     * An optional int to specify ldap server port, by default : 389
     * @param int @ldap_version
     * An optional int to specify ldap version, by default LDAP V3 protocol is used
+    * @param boolean @ldap_start_tls
+    * An optional boolean to use ldap over STARTTLS, by default LDAP STARTTLS is not used
     *
     * Initiate LDAP connection by creating an associated resource
     */
-    public function __construct($ldap_host, $ldap_port = 389, $ldap_version = 3)
+    public function __construct($ldap_host, $ldap_port = 389, $ldap_version = 3, $ldap_start_tls = false)
     {
         if (!is_string($ldap_host)) {
             throw new InvalidArgumentException('First argument to LDAP must be the hostname of a ldap server (string). Ex: ldap//example.com/ ');
@@ -43,6 +45,11 @@ class LDAP implements LDAPInterface
             ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, $ldap_version);
         } else {
             throw new InvalidArgumentException('Third argument to LDAP must be the ldap version (int). Ex : 3');
+        }
+
+        // Support LDAP over STARTTLS
+        if ($ldap_start_tls === true) {
+            ldap_start_tls($ldap);
         }
 
         $this->ldap_server = $ldap;

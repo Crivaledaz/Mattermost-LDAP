@@ -11,6 +11,7 @@ services:
             - ldap_host
             - ldap_port
             - ldap_version
+            - ldap_start_tls
             - ldap_search_attribute
             - ldap_base_dn
             - ldap_filter

@@ -58,6 +58,7 @@ Some image parameters can be changed, by specifying the desired parameters in co
 | ldap_host             | URL or IP to connect LDAP server                                    | `ldap://ldap.company.com/` |
 | ldap_port             | Port used to connect LDAP server                                    | `389`                      |
 | ldap_version          | LDAP version or protocol version used by LDAP server                | `3`                        |
+| ldap_start_tls        | LDAP over STARTTLS                                                  | `false`                    |
 | ldap_search_attribute | Attribute used to identify a user on the LDAP                       | `uid`                      |
 | ldap_filter           | Additional filter for LDAP search                                   | `objectClass=*`            |
 | ldap_base_dn          | The base directory name of your LDAP server                         | ` ou=People,o=Company`     |
