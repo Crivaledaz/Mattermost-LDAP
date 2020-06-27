@@ -33,6 +33,7 @@ before_script:
 script:
   - echo "Changing to travis test directory ($travis_dir)"
   - cd "$travis_dir"
+  - cp env.example .env
   # Test container run
   - travis_retry docker-compose -f docker-compose.yaml up -d && sleep 60
   - docker-compose -f docker-compose.yaml ps
