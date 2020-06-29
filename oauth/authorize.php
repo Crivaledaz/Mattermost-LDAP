@@ -14,7 +14,7 @@ $request = OAuth2\Request::createFromGlobals();
 $response = new OAuth2\Response();
 
 // If user has clicked on "not me" link, disconnect him by cleaning PHP SESSION variables.
-if ($_POST['disconnect']) {
+if (isset($_POST['disconnect'])) {
     $_SESSION=array();
 }
 
