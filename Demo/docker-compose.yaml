@@ -21,6 +21,7 @@ services:
             ldap_host: ldap://ldap.company.com:389/
             ldap_port: 389
             ldap_version: 3
+            ldap_start_tls: false
             ldap_search_attribute: uid
             ldap_base_dn: "ou=People,o=Company"
             ldap_filter: "(objectClass=*)"

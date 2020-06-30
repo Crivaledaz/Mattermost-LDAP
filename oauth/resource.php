@@ -27,7 +27,7 @@ $user = $info_oauth["user_id"];
 $assoc_id = intval($info_oauth["assoc_id"]);
 
 // Open a LDAP connection
-$ldap = new LDAP($ldap_host, $ldap_port, $ldap_version);
+$ldap = new LDAP($ldap_host, $ldap_port, $ldap_version, $ldap_start_tls);
 
 // Try to get user data on the LDAP
 try {

@@ -10,6 +10,9 @@ $hostname = "ldap://company.com:389";
 //LDAP version
 $ldap_version = 3;
 
+//LDAP STARTTLS
+$ldap_start_tls = false;
+
 //Unique identifier of user on LDAP
 $uid = "username";
 $email = "username@company.com";
