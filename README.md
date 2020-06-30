@@ -113,19 +113,19 @@ Install required packages :
 * For Centos 7, RHEL 7 and Fedora :
 ```bash
 #For PostgreSQL
-sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
+sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-xml php-pgsql git
 
 #For MySQL
-sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-xml php-mysql git
 ```
 
 * For Debian, ubuntu, Mint :
 ```bash
 #For PostgreSQL
-sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-pgsql git
+sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-dom php-pgsql git
 
 #For MySQL
-sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-mysql git
+sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-dom php-mysql git
 ```
 
 Setup your SQL server with the following command :
