@@ -18,7 +18,7 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-Provide commands or configuration file if possible.
+Provide commands, Mattermost and PHP logs or configuration file if possible.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
@@ -28,11 +28,11 @@ If applicable, add screenshots to help explain your problem.
 
 **Project (please complete the following information):**
 
--   Project Version: (e.g. version 0.4.0)
+-   Project Version: (e.g. version v1.1)
 
 **Desktop (please complete the following information):**
 
--   OS: (e.g. iOS)
+-   OS: (e.g. Fedora)
 -   Browser (e.g. chrome, safari)
 -   Version (e.g. 22)
 
