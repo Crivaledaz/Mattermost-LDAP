@@ -36,25 +36,25 @@ sleep 5
 
 #Creating Oauth role and associated database (need admin account on mysql)
 info "Creation of role $db_user and database $db_name ... (need to be root)"
-sudo mysql -u root --password=$mysql_pass --execute "CREATE DATABASE $db_name_name;"
+sudo mysql -u root --password=$mysql_pass --execute "CREATE DATABASE $db_name;"
 sudo mysql -u root --password=$mysql_pass --execute "CREATE USER $db_user@'%' IDENTIFIED BY '$db_pass';"
-sudo mysql -u root --password=$mysql_pass --execute "GRANT ALL PRIVILEGES ON $db_name_name.* TO $db_user@'%';"
+sudo mysql -u root --password=$mysql_pass --execute "GRANT ALL PRIVILEGES ON $db_name.* TO $db_user@'%';"
 
 #Creating tables for ouath database (use oauth role)
 info "Creation of tables for database $db_name (using $db_user)"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_client"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_access_tokens"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_authorization_codes"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_refresh_tokens"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_users"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_table_oauth_scopes"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_oauth_client"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_oauth_access_tokens"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_oauth_authorization_codes"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_oauth_refresh_tokens"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_users"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_table_oauth_scopes"
 
 #Insert new client in the database
 info "Insert new client in the database"
-mysql -u $db_user --password=$db_pass $db_name_name --execute "$create_client"
+mysql -u $db_user --password=$db_pass $db_name --execute "$create_client"
 
 #Verification
-mysql -u $db_user --password=$db_pass $db_name_name --execute "SELECT * from oauth_clients WHERE client_id='$client_id';" | grep '(1'
+mysql -u $db_user --password=$db_pass $db_name --execute "SELECT * from oauth_clients WHERE client_id='$client_id';" | grep '(1'
 
 if [ $? ]
 then ok "Client has been created ! Oauth Database is configured.\n"
