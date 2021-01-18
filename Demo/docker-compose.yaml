@@ -1,5 +1,24 @@
 version: '3'
 services:
+    ldap:
+        image: osixia/openldap:1.4.0
+        restart: always
+        domainname: "example.com"
+        hostname: "ldap"
+        command: --copy-service
+        ports:
+            - 389:389
+            - 636:636
+        volumes:
+            - ./bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+        environment:
+            LDAP_ORGANISATION: "Example Corp"
+            LDAP_DOMAIN: "example.com"
+            LDAP_ADMIN_PASSWORD: "changeMe-Pl34$e"
+            LDAP_READONLY_USER: "true"
+            LDAP_READONLY_USER_USERNAME: "butler"
+            LDAP_READONLY_USER_PASSWORD: "readonly"
+
     nginx:
         image: nginx
         restart: always
@@ -18,15 +37,14 @@ services:
         volumes:
             - ../oauth:/var/www/html/oauth
         environment:
-            ldap_host: ldap://ldap.company.com:389/
+            ldap_host: ldap://localhost:389/
             ldap_port: 389
             ldap_version: 3
-            ldap_start_tls: false
             ldap_search_attribute: uid
-            ldap_base_dn: "ou=People,o=Company"
+            ldap_base_dn: "dc=example,dc=com"
             ldap_filter: "(objectClass=*)"
-            ldap_bind_dn: ""
-            ldap_bind_pass: ""
+            ldap_bind_dn: "cn=butler,dc=example,dc=com"
+            ldap_bind_pass: "readonly"
             db_host: "127.0.0.1"
             db_port: "5432"
             db_type: "pgsql"

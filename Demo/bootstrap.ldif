@@ -1,0 +1,17 @@
+# Define OU for people
+dn: ou=People,dc=example,dc=com
+description: Company Employees
+objectclass: organizationalUnit
+objectclass: top
+ou: People
+
+# Entry 1: John DOE
+dn: uid=jdoe,ou=People,dc=example,dc=com
+uid: jdoe
+cn: John DOE
+sn: DOE
+gn: John
+mail: john.doe@example.com
+objectClass: inetOrgPerson
+# Password : test1234
+userPassword: {SSHA}GFR6gX9RlEj/AaP5mxpdCh1J1FM/pyn3

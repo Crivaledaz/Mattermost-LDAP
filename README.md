@@ -17,15 +17,19 @@ This module provides an Oauth2 server designed for PHP, an LDAP connector for PH
 
 See Limitation section for more information.
 
-## Docker-Compose setup
+## Quick Start - Demonstration
 
-The easiest way to setup Mattermost-LDAP is using the docker-compose implementation. Two docker-compose files are available in this repository :
-- `Demo/docker-compose.yaml` : To test and try Mattermost-LDAP. This docker-compose file instantiate a Mattermost Server from the official preview image provides by Mattermost and a Mattemrost-LDAP pre-configured server with a PostgreSQL database.
-- `docker-compose.yaml` : For production use. This docker-compose file only setup Mattermost-LDAP with an Apache server and a PostgreSQL database. This implementation uses an embedded Oauth server, which can be configured by environment variables.
+To test and try Mattermost-LDAP, you can use the demonstration available in the `Demo/` folder. This demonstration is based on a docker-compose implementation describe in the `Demo/docker-compose.yaml` file.
+
+This docker-compose file instantiate a Mattermost Server from the official preview image provides by Mattermost, a Mattemrost-LDAP pre-configured server with a PostgreSQL database and an OpenLDAP server with a test user : John DOE.
+
+To try Mattermost-LDAP, please read the following instructions.
 
 ### Requirements
 
-To use docker-compose implementation, you need to install Docker and Docker compose. For CentOS 8 and Fedora, it is recommended to use Podman and Podman compose instead of Docker and Docker compose.
+Firstly, to use docker-compose, you need to install Docker and Docker compose.
+
+*Note* : For CentOS 8 and Fedora, it is recommended to use Podman and Podman compose instead of Docker and Docker compose.
 
 For more information about Docker installation, see official guide : https://docs.docker.com/engine/install/
 
@@ -36,158 +40,71 @@ For more information about Podman installation, see official documentation : htt
 First, you need to clone (or download and extract) this repository on your server :
 ```bash
 git clone https://github.com/Crivaledaz/Mattermost-LDAP
-cd Mattermost-LDAP
-
-# For Demo (optional)
-cd Demo
+cd Mattermost-LDAP/Demo
 ```
 
-Then, before running the docker-compose file, you need to adapt LDAP and DB parameters. All parameters are gathered in the `env.example` file and they are passed to Postgres and Oauth server by environment variables.
-
-Copy the `env.example` file to `.env` and edit it to change with your values. For demo, parameters are directly in the `docker-compose.yaml` file, so you need to edit this file instead of `.env`.
-
-**Warning** : Postgres root password and database Oauth password must be changed. Client and secret tokens must be generated randomly, using `openssl rand -hex 32`.
-
-For more information about parameters, see beelow the configuration section of this documentation.
-
-Otherwise, for production, you need to create a directory to store PostgreSQL data. This directory will contain the Oauth database and allows data persistence, even if containers are stopped or restarted. By dafault, this Mattermost-LDAP implementation uses folder `data/` next to the `docker-compose.yaml` file to store data. This folder need to be created before running Docker compose :
+Then, you have to rename example configuration file without the example extension.
 ```bash
-mkdir data
+cp -p ../oauth/config_db.php.example ../oauth/config_db.php
+cp -p ../oauth/LDAP/config_ldap.php.example ../oauth/LDAP/config_ldap.php
 ```
 
-For demo, you need to rename example configuration file without the example extension.
-```bash
-cd Mattermost-LDAP/
-cp -p oauth/config_db.php.example oauth/config_db.php
-cp -p oauth/LDAP/config_ldap.php.example oauth/LDAP/config_ldap.php
-```
+Optionnally, you can adapt deployment parameters by editing the `Demo/docker-compose.yaml` file, before running it. Parameters are passed to Postgres database, Oauth server and LDAP server by environment variables. They are gathered in the `environment` section for each container.
 
-To use Mattermost-LDAP with you own Mattermost server, you need to configure your Mattermost instance as described in subsection "Mattermost" in section "Configuration"
+For more information about available parameters, see the configuration section of this documentation.
 
 ### Usage
 
-Once the `.env` file have been adapted, you can run the docker-compose file with the following commands :
+To run the docker-compose file use the following command :
 ```bash
-docker-compose build
+# With Docker
 docker-compose up -d
+
+# With Podman
+podman-compose up -d
 ```
 
-The build command allows Docker compose to build necessary image. Images use are available in the [Docker/](Docker) directory of this repository. The up command starts all services described in the Docker compose file.
+The up command starts all services described in the Docker compose file. The `-d` argument allow to start all container in background, in a detach mode.
 
-Once all services are started, go to Mattermost server. For the demo, Mattermost should be available on localhost : http://localhost. Click on GitLab button to login with LDAP credential on Mattermost-LDAP. Then, if you login successfully and authorize Mattermost-LDAP to transmit your data to Mattermost, you should be log on Mattermost.
+Once all services are started, go to Mattermost server. Mattermost should be available after a few seconds on localhost : http://localhost.
 
-*Note* : In demo, Mattermost server is available after few seconds.
+On the Mattermost login page, click on GitLab button to login with LDAP credential on Mattermost-LDAP. Complete the login form with following credentials :
+
+```
+username: jdoe
+password: test1234
+```
+
+Once you are logged in, you should authorize Mattermost-LDAP to transmit LDAP data to Mattermost. Then, you should be log on Mattermost with the John DOE user account and create a new team.
+
+That's all, you are logged into Mattermost with an LDAP account !
 
 To stop Mattermost server and Mattermost-LDAP, use the following command :
 ```bash
 # With Docker
-docker-compose down docker-compose.yaml
+docker-compose down
 
 # With Podman
-podman-compose down docker-compose.yaml
+podman-compose down
 ```
 
-*Note* : Docker compose setup replaces Bare-Metal setup, but configuration remains necessary.
+## Installation
 
-## Bare-Metal setup
+Mattermost-LDAP can be installed using containers or directly on a bare metal server, depending on your environment. Note that the installation process is easier with containers.
 
-### Requirements
+To install Mattermost-LDAP using containers use this documentation - [Container.md](Container.md).
 
-Mattermost-LDAP requires the following :
+To install Mattermost-LDAP on Bare Metal use the following documentation - [BareMetal.md](BareMetal.md).
 
-* PHP (minimum 5.3.9)
-* php-ldap
-* php-pdo
-* php-pgsql or php-mysql
-* httpd
-* postgresql or mariadb (mysql)
-* postgresql-server or mariadb-server
-* git
-
-Obviously, you must have a Mattermost Server installed and be administrator on it, and a LDAP server configured.
-
-### Pre-install
-
-Install required packages :
-
-* For Centos 7, RHEL 7 and Fedora :
-```bash
-#For PostgreSQL
-sudo yum -y --nogpgcheck install httpd php postgresql-server postgresql php-ldap php-pdo php-xml php-pgsql git
-
-#For MySQL
-sudo yum -y --nogpgcheck install httpd php mariadb-server mariadb php-ldap php-pdo php-xml php-mysql git
-```
-
-* For Debian, ubuntu, Mint :
-```bash
-#For PostgreSQL
-sudo apt-get -y install httpd php postgresql-server postgresql php-ldap php-pdo php-dom php-pgsql git
-
-#For MySQL
-sudo apt-get -y install httpd php mariadb-server mariadb php-ldap php-pdo php-dom php-mysql git
-```
-
-Setup your SQL server with the following command :
-```bash
-#For PostgreSQL (create a new database cluster)
-sudo postgresql-setup initdb
-
-#For MySQL (optional configuration for a secure MySQL server)
-sudo mysql_secure_installation
-```
-By default, PostgreSQL does not allow client authentication on the server or a database. So we need to enable it by editing pg_hba.conf file (in `/var/lib/pgsql`). Open this file and replace `ident` by `md5` on the first three lines (local, host 127.0.0.1 and host ::1/128). It's recommended to backup the original file before editing it.
-
-Then, start and enable service for Apache and Database (for all distribution using systemd):
-```bash
-#For PostgreSQL
-sudo systemctl start httpd
-sudo systemctl start postgresql
-sudo systemctl enable httpd
-sudo systemctl enable postgresql
-
-
-#For MySQL
-sudo systemctl start httpd
-sudo systemctl start mariadb
-sudo systemctl enable httpd
-sudo systemctl enable mariadb
-```
-
-Your system is ready to install and run Mattermost-LDAP module.
-
-### Install
-
-Clone (or download and extract) this repository and move `oauth` directory in `/var/www/html` (or your httpd root directory) :
-```bash
-cd ~
-git clone https://github.com/crivaledaz/Mattermost-LDAP.git
-cd Mattermost-LDAP
-cp -r oauth/ /var/www/html/
-```
-
-You need to create a database for the Oauth server. For this purpose, you can use the script `init_postgres.sh` or `init_mysql.sh`, available in `db_init` directory. These scripts try to configure your database automatically, by creating a new user and a new database associated for the Oauth server. Scripts also create all tables necessary for the module. If script failed, please report here, and try to configure manually your database by adapting command in scripts. Before running the script you can change the default settings by editing the `db_init/config_init.sh` file and modifying configuration variables. For PostgreSQL, you can copy and paste following lines :
-```bash
-cd db_init
-vim config_init.sh
-./init_postgres.sh
-```
-
-This script will automatically create and add a new client in the Oauth server, returning a client id and a client secret. You need to keep these two token to configure Mattermost. Please be sure the client secret remained secret.
-
-The redirect uri in the script must comply with the hostname of your Mattermost server, or else Mattermost will not be able to get data from the Oauth server. If you update your hostname, you will need to update this value.  Here is an example query:
-
-```sql
-UPDATE oauth_clients SET redirect_uri = 'https://mattermost.company.com/signup/gitlab/complete' WHERE client_id = '1234567890';
-```
-
-**Warning** : The `redirect_uri` parameter should be strictly the same as the one given by Mattermost to Oauth server during authentication. If your Mattermost server uses HTTPS, make sure the `redirect_uri` begin with `https`.
-
-*Note* : Mattermost build the `redirect_url` from the parameter `SiteURL` in `config.json`. Thus, if you set this parameter to `https://mattermost.company.com`, Mattermost will use the following redirect URL : http**s**://mattermost.company.com/signup/gitlab/complete (`SiteURL` + '/signup/gitlab/complete').
+Both installations allow to set up Mattermost-LDAP for a production use.
 
 ## Configuration
 
-Configuration files are provided with examples and default values. Each config file has an `example` extension, so you need to copy and to rename them without this extension. You can find a detailed description of each parameters available below.
+Configuration files are provided with examples and default values. Each config file has an `example` extension, so you need to copy and to rename them without this extension.
+
+You can find a detailed description of each parameters available below.
+
+**Note** : For container, these variables are overload by environment variables define in `.env` file or `docker-compose.yaml` file.
 
 ### Init script parameters
 
@@ -210,18 +127,6 @@ Configuration files are provided with examples and default values. Each config f
 The `client_id` and `client_secret` should be different and random tokens. You can use openssl to generate these tokens (`openssl rand -hex 32`). By default, these variables contain the `openssl` command, which use the openssl package. Tokens will be generated and printed at the end of the script.
 
 The var `user_id` has no impact, and could be used as a commentary field. By default this field is empty.
-
-### Mattermost
-
-Active Gitlab authentication in `System Console > Gitlab` (or `config.json`) and fill application id and secret with the two tokens got during install section. For the next fields use this :
-```
-User API Endpoint : http://HOSTNAME/oauth/resource.php
-Auth Endpoint: http://HOSTNAME/oauth/authorize.php
-Token Endpoint: http://HOSTNAME/oauth/token.php
-```
-Change `HOSTNAME` by hostname or ip of the server where you have installed Mattermost-LDAP module.
-
-Since Mattermost 4.9, these fields are disabled in admin panel, so you need to edit directly section `GitLabSettings` in the Mattermost configuration file `config.json`.
 
 ### Database credentials
 
@@ -266,62 +171,6 @@ Parameters 'ldap_bind_dn' and 'ldap_bind_pass' are required if your LDAP is rest
 
 To try your configuration you can use `ldap.php` available at the root of this project which use the LDAP library for PHP or you can use `ldapsearch` command in a shell.
 
-### Additional information for usage with nginx-proxy, nginx-proxy-letsencrypt
-
-In case you want to use `nginx-proxy`, `nginx-proxy-letsencrypt`, and (for example) `openldap`, it is possible to use subdomains for your services. Following this approach you could have mattermost running on on `https://chat.example.com` and authenticate via this container from `https://oauth.example.com`. This container will then have its own letsencypt certificate.
-
-You can add the following settings to your configuration files for this type of setup.
-
-docker-compose.yaml
-```yaml
-version: '3'
-
-[...]
-
-services:
-    mattermost-ldap:
-
-        [...]
-
-        expose:
-            - 80
-            - 443
-
-        environment:
-            [...]
-            - VIRTUAL_HOST=oauth.example.com,www.oauth.example.com
-            - LETSENCRYPT_HOST=oauth.example.com,www.oauth.example.com
-
-[...]
-```
-
-.env
-```bash
-[...]
-
-redirect_uri = "https://chat.example.com/signup/gitlab/complete"
-
-ldap_filter = "(&(objectClass=inetOrgPerson)(memberof=cn=chat,ou=groups,dc=example,dc=com))"
-
-[...]
-```
-
-This filter will additionally allow you to filter based on group affiliation within your LDAP server.
-
-Finally, add the following to your mattermost config.json to ensure the correct redirect.
-
-```json
-    "GitLabSettings": {
-        "Enable": true,
-        "Secret": "XXX",
-        "Id": "YYY",
-        "Scope": "",
-        "AuthEndpoint": "https://oauth.example.com/oauth/authorize.php",
-        "TokenEndpoint": "https://oauth.example.com/oauth/token.php",
-        "UserApiEndpoint": "https://oauth.example.com/oauth/resource.php"
-    },
-```
-
 ## Usage
 
 If you have succeeded previous step you only have to go to the login page of your Mattermost server and click on the Gitlab Button. You will be redirected to a form asking for your LDAP credentials. If your credentials are valid, you will be asked to authorize Oauth to give your information to Mattermost. After authorizing you should be redirected on Mattermost connected with your account.
@@ -334,17 +183,17 @@ This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL and M
 
 Others operating systems has not been tested yet but should work fine.
 
-MySQL has not really been tested so it is possible there is some bugs with.
+MySQL has not really been tested so it is possible there is some bugs.
 
 ## To do list
- * HTTPS support
- * Add CSS to make a beautiful interface for Oauth server
- * Change Gitlab button
- * Security audit
+
+* Support multi-branch LDAP [issue #74](https://github.com/Crivaledaz/Mattermost-LDAP/issues/74)
+* Change Gitlab button [issue #46](https://github.com/Crivaledaz/Mattermost-LDAP/issues/46)
+* Security audit
 
 ## Thanks
 
-I wish to thank CS SI and my colleagues for their help and support. Also, I thank Brent Shaffer for his [Oauth-server-php](https://github.com/bshaffer/oauth2-server-php) project and its [documentation](https://bshaffer.github.io/oauth2-server-php-docs/).
+I wish to thank CS GROUP and my colleagues for their help and support. Also, I thank Brent Shaffer for his [Oauth-server-php](https://github.com/bshaffer/oauth2-server-php) project and its [documentation](https://bshaffer.github.io/oauth2-server-php-docs/).
 
 ## Known issues
 

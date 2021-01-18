@@ -20,6 +20,7 @@
         ],
         "ReadTimeout": 300,
         "WriteTimeout": 300,
+        "IdleTimeout": 60,
         "MaximumLoginAttempts": 10,
         "GoroutineHealthThreshold": -1,
         "GoogleDeveloperKey": "",
@@ -33,6 +34,7 @@
         "EnableLinkPreviews": false,
         "EnableTesting": false,
         "EnableDeveloper": false,
+        "EnableOpenTracing": false,
         "EnableSecurityFixAlert": true,
         "EnableInsecureOutgoingConnections": false,
         "AllowedUntrustedInternalConnections": "",
@@ -75,6 +77,7 @@
         "ExperimentalEnableDefaultChannelLeaveJoinMessages": true,
         "ExperimentalGroupUnreadChannels": "disabled",
         "ExperimentalChannelOrganization": false,
+        "ExperimentalChannelSidebarOrganization": "disabled",
         "ImageProxyType": "",
         "ImageProxyURL": "",
         "ImageProxyOptions": "",
@@ -153,6 +156,22 @@
         "EnableWebhookDebugging": true,
         "EnableDiagnostics": true
     },
+    "ExperimentalAuditSettings": {
+        "SysLogEnabled": false,
+        "SysLogIP": "localhost",
+        "SysLogPort": 6514,
+        "SysLogTag": "",
+        "SysLogCert": "",
+        "SysLogInsecure": false,
+        "SysLogMaxQueueSize": 1000,
+        "FileEnabled": false,
+        "FileName": "",
+        "FileMaxSizeMB": 100,
+        "FileMaxAgeDays": 0,
+        "FileMaxBackups": 0,
+        "FileCompress": false,
+        "FileMaxQueueSize": 1000
+    },
     "NotificationLogSettings": {
         "EnableConsole": true,
         "ConsoleLevel": "DEBUG",
@@ -205,6 +224,7 @@
         "SMTPPassword": "",
         "SMTPServer": "localhost",
         "SMTPPort": "10025",
+        "SMTPServerTimeout": 10,
         "ConnectionSecurity": "",
         "SendPushNotifications": false,
         "PushNotificationServer": "",
@@ -280,7 +300,8 @@
         "Scope": "User.Read",
         "AuthEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
         "TokenEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-        "UserApiEndpoint": "https://graph.microsoft.com/v1.0/me"
+        "UserApiEndpoint": "https://graph.microsoft.com/v1.0/me",
+        "DirectoryId": ""
     },
     "LdapSettings": {
         "Enable": false,
@@ -294,6 +315,8 @@
         "UserFilter": "",
         "GroupFilter": "",
         "GuestFilter": "",
+        "EnableAdminFilter": false,
+        "AdminFilter": "",
         "GroupDisplayNameAttribute": "",
         "GroupIdAttribute": "",
         "FirstNameAttribute": "",
@@ -333,6 +356,7 @@
         "SignRequest": false,
         "IdpUrl": "",
         "IdpDescriptorUrl": "",
+        "IdpMetadataUrl": "",
         "AssertionConsumerServiceURL": "",
         "SignatureAlgorithm": "RSAwithSHA1",
         "CanonicalAlgorithm": "Canonical1.0",
@@ -343,6 +367,8 @@
         "PrivateKeyFile": "",
         "IdAttribute": "",
         "GuestAttribute": "",
+        "EnableAdminAttribute": false,
+        "AdminAttribute": "",
         "FirstNameAttribute": "",
         "LastNameAttribute": "",
         "EmailAttribute": "",
@@ -386,7 +412,8 @@
         "ClientSideCertCheck": "secondary",
         "EnableClickToReply": false,
         "LinkMetadataTimeoutMilliseconds": 5000,
-        "RestrictSystemAdmin": false
+        "RestrictSystemAdmin": false,
+        "UseNewSAMLLibrary": false
     },
     "AnalyticsSettings": {
         "MaxUsersForStatistics": 2500
@@ -452,6 +479,8 @@
             }
         },
         "EnableMarketplace": true,
+        "EnableRemoteMarketplace": true,
+        "AutomaticPrepackagedPlugins": true,
         "RequirePluginSignature": false,
         "MarketplaceUrl": "https://api.integrations.mattermost.com",
         "SignaturePublicKeyFiles": []
