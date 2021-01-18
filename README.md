@@ -53,7 +53,7 @@ For more information about parameters, see beelow the configuration section of t
 Otherwise, for production, you need to create a directory to store PostgreSQL data. This directory will contain the Oauth database and allows data persistence, even if containers are stopped or restarted. By dafault, this Mattermost-LDAP implementation uses folder `data/` next to the `docker-compose.yaml` file to store data. This folder need to be created before running Docker compose :
 ```bash
 mkdir data
-```      
+```
 
 For demo, you need to rename example configuration file without the example extension.
 ```bash
@@ -265,6 +265,66 @@ Parameters 'ldap_bind_dn' and 'ldap_bind_pass' are required if your LDAP is rest
 *Note* : 'ldap_version' avoid LDAP blind error with LDAP 3 (issue #14)
 
 To try your configuration you can use `ldap.php` available at the root of this project which use the LDAP library for PHP or you can use `ldapsearch` command in a shell.
+
+### Additional information for usage with nginx-proxy, nginx-proxy-letsencrypt
+
+In case you want to use `nginx-proxy`, `nginx-proxy-letsencrypt`, and (for example) `openldap`, it is possible to use subdomains for your services. Following this approach you could have mattermost running on on `https://chat.example.com` and authenticate *via this container from `https://oauth.example.com`. This container will then have its own letsencypt certificate.
+
+You can add the following settings to your configuration files for this type of setup.
+
+docker-compose.yaml
+```yaml
+version: '3'
+
+[...]
+
+services:
+    mattermost-ldap:
+
+        [...]
+
+        expose:
+            - 80
+            - 443
+
+        environment:
+            [...]
+            - VIRTUAL_HOST=oauth.example.com,www.oauth.example.com
+            - LETSENCRYPT_HOST=oauth.example.com,www.oauth.example.com
+
+[...]
+```
+
+.env
+```bash
+[...]
+
+redirect_uri = "https://chat.example.com/signup/gitlab/complete"
+
+[...]
+
+ldap_filter = "(&(objectClass=inetOrgPerson)(memberof=cn=chat,ou=groups,dc=example,dc=com))"
+
+[...]
+```
+
+This filter will additionally allow you to filter based on group affiliation within your LDAP server.
+
+Finally, add the following to your mattermost config.json to ensure the correct redirect.
+
+```json
+[...]
+    "GitLabSettings": {
+        "Enable": true,
+        "Secret": "XXX",
+        "Id": "YYY",
+        "Scope": "",
+        "AuthEndpoint": "https://oauth.example.com/oauth/authorize.php",
+        "TokenEndpoint": "https://oauth.example.com/oauth/token.php",
+        "UserApiEndpoint": "https://oauth.example.com/oauth/resource.php"
+    },
+[...]
+```
 
 ## Usage
 
