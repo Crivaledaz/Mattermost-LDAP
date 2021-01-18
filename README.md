@@ -268,7 +268,7 @@ To try your configuration you can use `ldap.php` available at the root of this p
 
 ### Additional information for usage with nginx-proxy, nginx-proxy-letsencrypt
 
-In case you want to use `nginx-proxy`, `nginx-proxy-letsencrypt`, and (for example) `openldap`, it is possible to use subdomains for your services. Following this approach you could have mattermost running on on `https://chat.example.com` and authenticate *via this container from `https://oauth.example.com`. This container will then have its own letsencypt certificate.
+In case you want to use `nginx-proxy`, `nginx-proxy-letsencrypt`, and (for example) `openldap`, it is possible to use subdomains for your services. Following this approach you could have mattermost running on on `https://chat.example.com` and authenticate via this container from `https://oauth.example.com`. This container will then have its own letsencypt certificate.
 
 You can add the following settings to your configuration files for this type of setup.
 
@@ -301,8 +301,6 @@ services:
 
 redirect_uri = "https://chat.example.com/signup/gitlab/complete"
 
-[...]
-
 ldap_filter = "(&(objectClass=inetOrgPerson)(memberof=cn=chat,ou=groups,dc=example,dc=com))"
 
 [...]
@@ -313,7 +311,6 @@ This filter will additionally allow you to filter based on group affiliation wit
 Finally, add the following to your mattermost config.json to ensure the correct redirect.
 
 ```json
-[...]
     "GitLabSettings": {
         "Enable": true,
         "Secret": "XXX",
@@ -323,7 +320,6 @@ Finally, add the following to your mattermost config.json to ensure the correct 
         "TokenEndpoint": "https://oauth.example.com/oauth/token.php",
         "UserApiEndpoint": "https://oauth.example.com/oauth/resource.php"
     },
-[...]
 ```
 
 ## Usage
