@@ -129,6 +129,11 @@ Change `HOSTNAME` by hostname or ip of the server where you have installed Matte
 
 Since Mattermost 4.9, these fields are disabled in admin panel, so you need to edit directly section `GitLabSettings` in the Mattermost configuration file `config.json`.
 
+Since Mattermost 6.x the configuration needs to be changed in the `Configurations` SQL table. After setting the `Gitlab Site URL`, `Application ID` & `Application Secret Key` via the System Console, the following SQL commands can fix the URLs:
+- `UPDATE Configurations SET Value=REPLACE(Value, 'https://mm-ldap.example.com/oauth/authorize', 'https://mm-ldap.example.com/oauth/authorize.php');`
+- `UPDATE Configurations SET Value=REPLACE(Value, 'https://mm-ldap.example.com/oauth/token', 'https://mm-ldap.example.com/oauth/token.php');`
+- `UPDATE Configurations SET Value=REPLACE(Value, 'https://mm-ldap.example.com/api/v4/user', 'https://mm-ldap.example.com/oauth/resource.php');`
+
 In the `config.json` file, GitLab configuration is gathered in the section `GitLabSettings`. You have to enable it and to fill parameters with your values. Once completed, the section should look like :
 
 ```
