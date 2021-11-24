@@ -30,7 +30,7 @@ if (!isset($_SESSION['uid']))
   // Store the authorize request
   $explode_url=explode("/", strip_tags(trim($_SERVER['REQUEST_URI'])));
   $_SESSION['auth_page']=end($explode_url);
-  header('Location: index.php');
+  header('Location: access_token');
   exit();
 }
 

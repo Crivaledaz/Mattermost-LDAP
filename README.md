@@ -7,7 +7,7 @@ This module provides an external LDAP authentication in Mattermost for the Team 
 
 Currently, LDAP authentication in Mattermost is not featured in the Team Edition (only in the Enterprise Edition). Thus, the only way to get LDAP authentication in Mattermost is to install Gitlab and use its Single Sign On (SSO) feature. Gitlab allows LDAP authentication and transmits user data to Mattermost. So, anyone who wishes to use LDAP with Mattermost must run Gitlab, even if he does not use it, for the SSO feature.
 
-However, although Gitlab is a nice software, it is resources-consuming and a bit complicated to manage if you just want the SSO feature. That's the reason why, this module provides an oauth server to only reproduce the Gitlab SSO feature and allows a simple and secure LDAP authentication to Mattermost.
+However, although Gitlab is a nice software, it is resources-consuming and a bit complicated to manage if you just want the SSO feature. That's the reason why, this module provides an Oauth server to only reproduce the Gitlab SSO feature and allows a simple and secure LDAP authentication to Mattermost.
 
 The Mattermost-LDAP project uses the Gitlab authentication feature from Mattermost and substitute Gitlab to LDAP interaction. The main advantage of this module is to provide a light and easy to use LDAP connector for Mattermost not to need Gitlab.
 
@@ -179,7 +179,7 @@ Keep in mind this will create a new account on your Mattermost server with infor
 
 ## Limitation
 
-This module has been tested on Centos 7, Fedora and Ubuntu with PostgreSQL and Mattermost Community Edition version 4.1, 4.9, 5.0.1, 5.10, 5.15.1, 5.51.0 and 5.22.0. Mattermost-LDAP is compliant with Mattermost Team Edition 4.x.x and 5.x.x.
+This module has been tested on Centos (7, 8, 8 stream), Fedora and Ubuntu with PostgreSQL and Mattermost Community Edition version 4.1, 4.9, 5.0.1, 5.10, 5.15.1, 5.51.0, 5.22.0, 5.36.0 and 6.0.0. Mattermost-LDAP is compliant with Mattermost Team Edition 4.x.x, 5.x.x and 6.x.x.
 
 Others operating systems has not been tested yet but should work fine.
 
