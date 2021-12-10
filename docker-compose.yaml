@@ -1,29 +1,38 @@
 version: '3'
 services:
-    mattermost-ldap:
-        build: Docker/mattermostldap
-        image: mattermostldap
+    nginx:
+        image: nginx
         restart: always
         ports:
             - 80:80
             - 443:443
+        volumes:
+            - ./oauth:/var/www/html/oauth
+            - ./oauth.conf:/etc/nginx/conf.d/oauth.conf:ro
+            - ./certs:/etc/nginx/certs
+        links:
+            - "php:php"
+    php:
+        build: ./Docker/php-ldap-pgsql
+        image: php-ldap-pgsql
+        volumes:
+            - ./oauth:/var/www/html/oauth
         environment:
-            - ldap_host
-            - ldap_port
-            - ldap_version
-            - ldap_start_tls
-            - ldap_search_attribute
-            - ldap_base_dn
-            - ldap_filter
-            - ldap_bind_dn
-            - ldap_bind_pass
-            - db_host
-            - db_port
-            - db_type
-            - db_name
-            - db_user
-            - db_pass
-
+            ldap_host: ldap://ldap.company.com:389/
+            ldap_port: 389
+            ldap_version: 3
+            ldap_start_tls: 0
+            ldap_search_attribute: uid
+            ldap_base_dn: "ou=People,o=Company"
+            ldap_filter: "(objectClass=*)"
+            ldap_bind_dn: ""
+            ldap_bind_pass: ""
+            db_host: "127.0.0.1"
+            db_port: "5432"
+            db_type: "pgsql"
+            db_name: "oauth_db"
+            db_user: "oauth"
+            db_pass: "oauth_secure-pass"
     db:
         image: postgres:alpine
         restart: always
@@ -32,17 +41,17 @@ services:
             - ./db_init/config_init.sh.example:/docker-entrypoint-initdb.d/config_init.sh
             - ./data/:/var/lib/postgresql/data/
         environment:
-            - POSTGRES_USER
-            - POSTGRES_PASSWORD
-            - POSTGRES_HOST_AUTH_METHOD
-            - client_id
-            - client_secret
-            - redirect_uri
-            - grant_types
-            - scope
-            - user_id
-            - db_user
-            - db_pass
-            - db_name
-            - db_host
-            - db_port
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: rootroot
+            POSTGRES_HOST_AUTH_METHOD: trust
+            client_id: 123456789abcdef123456789abcdef
+            client_secret: fedcba987654321fedcba987654321
+            redirect_uri: "https://mattermost.company.com/signup/gitlab/complete"
+            grant_types: "authorization_code"
+            scope: "api"
+            user_id: ""
+            db_user: "oauth"
+            db_pass: "oauth_secure-pass"
+            db_name: "oauth_db"
+            db_host: "127.0.0.1"
+            db_port: "5432"

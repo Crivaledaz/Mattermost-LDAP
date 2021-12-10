@@ -19,7 +19,7 @@ See Limitation section for more information.
 
 ## Quick Start - Demonstration
 
-To test and try Mattermost-LDAP, you can use the demonstration available in the `Demo/` folder. This demonstration is based on a docker-compose implementation describe in the `Demo/docker-compose.yaml` file.
+To test and try Mattermost-LDAP, you can use the demonstration available in the `Demo/` folder. This demonstration is based on a docker-compose implementation describe in the [`Demo/docker-compose.yaml` file](https://github.com/Crivaledaz/Mattermost-LDAP/blob/master/Demo/docker-compose.yaml).
 
 This docker-compose file instantiate a Mattermost Server from the official preview image provides by Mattermost, a Mattemrost-LDAP pre-configured server with a PostgreSQL database and an OpenLDAP server with a test user : John DOE.
 
@@ -64,7 +64,7 @@ docker-compose up -d
 podman-compose up -d
 ```
 
-The up command starts all services described in the Docker compose file. The `-d` argument allow to start all container in background, in a detach mode.
+The up command starts all services described in the Docker compose file. The `-d` argument allows to start all container in background, in a detach mode.
 
 Once all services are started, go to Mattermost server. Mattermost should be available after a few seconds on localhost : http://localhost.
 
@@ -104,7 +104,7 @@ Configuration files are provided with examples and default values. Each config f
 
 You can find a detailed description of each parameters available below.
 
-**Note** : For container, these variables are overload by environment variables define in `.env` file or `docker-compose.yaml` file.
+**Note** : For container, these variables are overload by environment variables define in the [`docker-compose.yaml`](https://github.com/Crivaledaz/Mattermost-LDAP/blob/master/docker-compose.yaml) file.
 
 ### Init script parameters
 
