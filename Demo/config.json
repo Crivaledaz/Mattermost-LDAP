@@ -35,6 +35,8 @@
         "RestrictLinkPreviews": "",
         "EnableTesting": false,
         "EnableDeveloper": false,
+        "DeveloperFlags": "",
+        "EnableClientPerformanceDebugging": false,
         "EnableOpenTracing": false,
         "EnableSecurityFixAlert": true,
         "EnableInsecureOutgoingConnections": false,
@@ -85,6 +87,7 @@
         "EnableBotAccountCreation": false,
         "EnableSVGs": true,
         "EnableLatex": true,
+        "EnableInlineLatex": true,
         "EnableAPIChannelDeletion": false,
         "EnableLocalMode": false,
         "LocalModeSocketLocation": "/var/tmp/mattermost_local.socket",
@@ -95,7 +98,7 @@
         "ThreadAutoFollow": true,
         "CollapsedThreads": "disabled",
         "ManagedResourcePaths": "",
-        "EnableReliableWebSockets": false
+        "EnableCustomGroups": true
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
@@ -123,8 +126,6 @@
     "ClientRequirements": {
         "AndroidLatestVersion": "",
         "AndroidMinVersion": "",
-        "DesktopLatestVersion": "",
-        "DesktopMinVersion": "",
         "IosLatestVersion": "",
         "IosMinVersion": ""
     },
@@ -141,6 +142,7 @@
         "AtRestEncryptKey": "95ps7omhzmhusdfqh5bki5ye4xfd4hgw",
         "QueryTimeout": 30,
         "DisableDatabaseSearch": false,
+        "MigrationsStatementTimeoutSeconds": 100000,
         "ReplicaLagSettings": []
     },
     "LogSettings": {
@@ -289,8 +291,8 @@
         "Id": "123456789abcdef123456789abcdef",
         "Scope": "",
         "AuthEndpoint": "http://localhost/oauth/authorize",
-        "TokenEndpoint": "http://localhost/oauth/token.php",
-        "UserAPIEndpoint": "http://localhost/oauth/resource.php",
+        "TokenEndpoint": "http://webserver/oauth/token.php",
+        "UserAPIEndpoint": "http://webserver/oauth/resource.php",
         "DiscoveryEndpoint": "",
         "ButtonText": "",
         "ButtonColor": ""
@@ -493,8 +495,10 @@
     "DataRetentionSettings": {
         "EnableMessageDeletion": false,
         "EnableFileDeletion": false,
+        "EnableBoardsDeletion": false,
         "MessageRetentionDays": 365,
         "FileRetentionDays": 365,
+        "BoardsRetentionDays": 365,
         "DeletionJobStartTime": "02:00",
         "BatchSize": 3000
     },
@@ -515,7 +519,8 @@
     },
     "JobSettings": {
         "RunJobs": true,
-        "RunScheduler": true
+        "RunScheduler": true,
+        "CleanupJobsThresholdDays": -1
     },
     "PluginSettings": {
         "Enable": true,
@@ -529,7 +534,7 @@
                 "BotUserID": "gawh538krt8w7mj1irqb9k65to"
             },
             "playbooks": {
-                "BotUserID": "cak9zgjpx78x8gbab9w8iftgxc"
+                "BotUserID": "fdmzdn3m4bgu8bhd48etu6dqjr"
             }
         },
         "PluginStates": {

@@ -1,6 +1,6 @@
 version: '3'
 services:
-    nginx:
+    webserver:
         image: nginx
         restart: always
         ports:
@@ -10,8 +10,8 @@ services:
             - ./oauth:/var/www/html/oauth
             - ./oauth.conf:/etc/nginx/conf.d/oauth.conf:ro
             - ./certs:/etc/nginx/certs
-        links:
-            - "php:php"
+        depends_on:
+            - php
     php:
         build: ./Docker/php-ldap-pgsql
         image: php-ldap-pgsql
@@ -27,13 +27,16 @@ services:
             ldap_filter: "(objectClass=*)"
             ldap_bind_dn: ""
             ldap_bind_pass: ""
-            db_host: "127.0.0.1"
+            db_host: "database"
             db_port: "5432"
             db_type: "pgsql"
             db_name: "oauth_db"
             db_user: "oauth"
             db_pass: "oauth_secure-pass"
-    db:
+        depends_on:
+            - database
+
+    database:
         image: postgres:alpine
         restart: always
         volumes:

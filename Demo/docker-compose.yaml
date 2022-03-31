@@ -19,7 +19,7 @@ services:
             LDAP_READONLY_USER_USERNAME: "butler"
             LDAP_READONLY_USER_PASSWORD: "readonly"
 
-    nginx:
+    webserver:
         image: nginx
         restart: always
         ports:
@@ -28,8 +28,8 @@ services:
         volumes:
             - ../oauth:/var/www/html/oauth
             - ./nginx.conf:/etc/nginx/nginx.conf
-        links:
-            - "php:php"
+        depends_on:
+            - php
 
     php:
         build: ../Docker/php-ldap-pgsql
@@ -37,7 +37,7 @@ services:
         volumes:
             - ../oauth:/var/www/html/oauth
         environment:
-            ldap_host: ldap://localhost:389/
+            ldap_host: ldap://ldap:389/
             ldap_port: 389
             ldap_version: 3
             ldap_search_attribute: uid
@@ -45,14 +45,17 @@ services:
             ldap_filter: "(objectClass=*)"
             ldap_bind_dn: "cn=butler,dc=example,dc=com"
             ldap_bind_pass: "readonly"
-            db_host: "127.0.0.1"
+            db_host: "database"
             db_port: "5432"
             db_type: "pgsql"
             db_name: "oauth_db"
             db_user: "oauth"
             db_pass: "oauth_secure-pass"
+        depends_on:
+            - database
+            - ldap
 
-    db:
+    database:
         image: postgres:alpine
         restart: always
         volumes:
