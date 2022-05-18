@@ -36,7 +36,7 @@ try {
     // Here is the patch for Mattermost 4.4 and newer. Gitlab has changed the JSON output of oauth service. Many data are not used by Mattermost, but there is a stack error if we delete them. That's the reason why date and many parameters are null or empty.
     $resp = array(
 	"id" => $assoc_id,
-	"name" => $data['cn'],
+	"name" => strlen($data['displayName']) > 0 ? $data['displayName'] : $data['cn'],
 	"username" => $user,
 	"state" => "active",
 	"avatar_url" => "",
