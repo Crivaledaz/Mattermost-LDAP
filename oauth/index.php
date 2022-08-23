@@ -41,7 +41,7 @@ else
      {
         messageShow($prompt_template, 'Username has incorrect format ... Please try again');
     }
-    elseif (strlen($_POST['password']) > 64 || strlen($_POST['password']) <= 7)
+    elseif (strlen($_POST['password']) > 64)
     {
         messageShow($prompt_template, 'Password has incorrect format ... Please try again');
     }

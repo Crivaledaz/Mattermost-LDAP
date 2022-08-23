@@ -47,12 +47,12 @@ table {
 
 #form_icon img {
     width: 100%;
-    max-width: 450px;
+    max-width: 150px;
 }
 
 #form_icon_prompt img {
     width: 50%;
-    max-width: 350px;
+    max-width: 150px;
 }
 
 
@@ -63,7 +63,7 @@ table {
     justify-content: center;
     align-items: center;
     position: absolute;
-    transform: translate(-50%, 25%);
+    transform: translate(-50%, 8%);
 }
 
 /* Style input fields */
@@ -86,7 +86,7 @@ table {
     height: 60px;
 
     /* Make the borders more round */
-    border-radius: 12px;
+    border-radius: 5px;
     width: 100%;
 }
 
@@ -118,7 +118,7 @@ table {
     text-transform: capitalize;
     text-align: center;
     display: inline-block;
-    margin-top: 25%;
+    margin-top: 10%;
     margin-right: 2%;
     width: 50%;
 }

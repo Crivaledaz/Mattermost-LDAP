@@ -154,7 +154,7 @@ class LDAP implements LDAPInterface
     */
     public function getDataForMattermost($ldap_base_dn, $ldap_filter, $ldap_bind_dn, $ldap_bind_pass, $ldap_search_attribute, $user)
     {
-        $attribute=array("cn","mail");
+        $attribute=array("cn","mail","displayName");
 
         if (!is_string($ldap_base_dn)) {
             throw new InvalidArgumentException('First argument to LDAP/getData must be the ldap base directory name (string). Ex: o=Company');
@@ -212,7 +212,9 @@ class LDAP implements LDAPInterface
             throw new Exception('An error has occured during ldap_get_values execution (complete name). Please check parameter of LDAP/getData.');
         }
 
-        return array("mail" => $mail[0], "cn" => $cn[0]);
+        $displayName = ldap_get_values($this->ldap_server, $data, "displayName");
+
+        return array("mail" => $mail[0], "cn" => $cn[0], "displayName" => $displayName[0]);
     }
 
     /*
