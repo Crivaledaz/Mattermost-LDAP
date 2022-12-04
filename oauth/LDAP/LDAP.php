@@ -75,7 +75,7 @@ class LDAP implements LDAPInterface
     * TRUE if the user is identified and can access to the LDAP server
     * and FALSE if it isn't
     */
-    public function checkLogin($user, $password = null, $ldap_search_attribute, $ldap_filter = null, $ldap_base_dn, $ldap_bind_dn, $ldap_bind_pass)
+    public function checkLogin($user, $ldap_search_attribute, $ldap_base_dn, $ldap_bind_dn, $ldap_bind_pass, $password = null, $ldap_filter = null)
     {
         if (!is_string($user)) {
             throw new InvalidArgumentException('First argument to LDAP/checkLogin must be the username or email of a ldap user (string). Ex: jdupont or jdupont@company.com');
