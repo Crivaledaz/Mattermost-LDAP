@@ -56,7 +56,7 @@ else
 
         // Check user credential on LDAP
         try{
-            $authenticated = $ldap->checkLogin($user,$password,$ldap_search_attribute,$ldap_filter,$ldap_base_dn,$ldap_bind_dn,$ldap_bind_pass);
+            $authenticated = $ldap->checkLogin($user,$ldap_search_attribute,$ldap_base_dn,$ldap_bind_dn,$ldap_bind_pass,$password,$ldap_filter);
         }
         catch (Exception $e)
         {
