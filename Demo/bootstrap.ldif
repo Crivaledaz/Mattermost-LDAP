@@ -11,6 +11,7 @@ uid: jdoe
 cn: John DOE
 sn: DOE
 gn: John
+displayName: John DOE
 mail: john.doe@example.com
 objectClass: inetOrgPerson
 # Password : test1234

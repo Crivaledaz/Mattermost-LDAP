@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * Adapted from Oauth2-server-php cookbook
  * @see http://bshaffer.github.io/oauth2-server-php-docs/cookbook/
