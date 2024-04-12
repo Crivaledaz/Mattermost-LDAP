@@ -52,7 +52,7 @@ else
         $password=$_POST['password'];
 
         // Open a LDAP connection
-        $ldap = new LDAP($ldap_host,$ldap_port,$ldap_version,$ldap_start_tls);
+        $ldap = new LDAP($ldap_host, $ldap_port, $ldap_version, $ldap_start_tls, $ldap_cert_path, $ldap_key_path, $ldap_secure);
 
         // Check user credential on LDAP
         try{

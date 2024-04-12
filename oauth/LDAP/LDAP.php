@@ -14,20 +14,26 @@ class LDAP implements LDAPInterface
     protected $ldap_server;
 
     /**
-    * LDAP Resource
-    *
-    * @param string @ldap_host
-    * Either a hostname or, with OpenLDAP 2.x.x and later, a full LDAP URI
-    * @param int @ldap_port
-    * An optional int to specify ldap server port, by default : 389
-    * @param int @ldap_version
-    * An optional int to specify ldap version, by default LDAP V3 protocol is used
-    * @param boolean @ldap_start_tls
-    * An optional boolean to use ldap over STARTTLS, by default LDAP STARTTLS is not used
-    *
-    * Initiate LDAP connection by creating an associated resource
-    */
-    public function __construct($ldap_host, $ldap_port = 389, $ldap_version = 3, $ldap_start_tls = false)
+     * LDAP Resource
+     *
+     * @param string @ldap_host
+     * Either a hostname or, with OpenLDAP 2.x.x and later, a full LDAP URI
+     * @param int @ldap_port
+     * An optional int to specify ldap server port, by default : 389
+     * @param int @ldap_version
+     * An optional int to specify ldap version, by default LDAP V3 protocol is used
+     * @param boolean @ldap_start_tls
+     * An optional boolean to use ldap over STARTTLS, by default LDAP STARTTLS is not used
+     * @param string @ldap_cert_path
+     * An optional string to specify the path to the certificate file
+     * @param string @ldap_key_path
+     * An optional string to specify the path to the key file
+     * @param boolean @ldap_secure
+     * An optional boolean to use ldap over secure connection, by default LDAP secure connection is not used
+     *
+     * Initiate LDAP connection by creating an associated resource
+     */
+    public function __construct($ldap_host, $ldap_port = 389, $ldap_version = 3, $ldap_start_tls = false, $ldap_cert_path, $ldap_key_path, $ldap_secure = false)
     {
         if (!is_string($ldap_host)) {
             throw new InvalidArgumentException('First argument to LDAP must be the hostname of a ldap server (string). Ex: ldap//example.com/ ');
@@ -37,12 +43,23 @@ class LDAP implements LDAPInterface
             throw new InvalidArgumentException('Second argument to LDAP must be the ldap server port (int). Ex : 389');
         }
 
+        // Connect to LDAP server using secure connection with certificate and key
+        if ($ldap_secure === true) {
+            if (!is_string($ldap_cert_path)) {
+                throw new InvalidArgumentException('Fifth argument to LDAP must be the path to the certificate file (string).');
+            }
+            if (!is_string($ldap_key_path)) {
+                throw new InvalidArgumentException('Sixth argument to LDAP must be the path to the key file (string).');
+            }
+        }
+
         $ldap = ldap_connect($ldap_host, $ldap_port)
-            or die("Unable to connect to the ldap server : $ldaphost ! Please check your configuration.");
+            or die("Unable to connect to the ldap server : $ldap_host ! Please check your configuration.");
 
         // Support LDAP V3 since many users have encountered difficulties with LDAP V3.
         if (is_int($ldap_version) && $ldap_version <= 3 && $ldap_version > 0) {
             ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, $ldap_version);
+            ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
         } else {
             throw new InvalidArgumentException('Third argument to LDAP must be the ldap version (int). Ex : 3');
         }
