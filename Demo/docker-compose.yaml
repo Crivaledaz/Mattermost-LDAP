@@ -45,6 +45,9 @@ services:
             ldap_filter: "(objectClass=*)"
             ldap_bind_dn: "cn=butler,dc=example,dc=com"
             ldap_bind_pass: "readonly"
+            ldap_secure: 0
+            ldap_cert_path: "/var/www/html/oauth/certs/cert.crt"
+            ldap_key_path: "/var/www/html/oauth/certs/private.key"
             db_host: "database"
             db_port: "5432"
             db_type: "pgsql"
