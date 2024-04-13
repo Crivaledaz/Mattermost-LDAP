@@ -160,6 +160,9 @@ Edit `oauth/LDAP/config_ldap.php` and adapt prameters with your LDAP configurati
 | ldap_base_dn          | The base directory name of your LDAP server                         | `ou=People,o=Company`      |
 | ldap_bind_dn          | The LDAP Directory Name of an service account to allow LDAP search  |                            |
 | ldap_bind_pass        | The password associated to the service account to allow LDAP search |                            |
+| ldap_secure           | LDAP over ldaps (ex:ldaps://ldap.google.com)                        | `false`                    |
+| ldap_cert_path        | LDAP certificate file for secure LDAP                               | `/var/www/html/oauth/certs/certificate.crt`|
+| ldap_key_path         | LDAP private key file for secure LDAP                               | `/var/www/html/oauth/certs/key.key`|
 
 For openLDAP server, the 'ldap_search_attribute' should be `uid`, and for AD server this must be `sAMAccountName`. Nevertheless, 'email' or 'cn' could be used, this depends on your LDAP configuration.
 
